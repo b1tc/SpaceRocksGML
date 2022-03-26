@@ -1,0 +1,13 @@
+### Video Three - Attacks & Collisions
+
+Video three provides a link to [Assets](https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbDdLNnhQbHhTVF9qcFRFWk55UWMtUnlRMzk2d3xBQ3Jtc0ttZlJmQzhia0RxcjU5bXdWeFNNMDBoS0s3ZFJuNmJ5UVlZNGN0S0FqOUctSjdQcW1QNWlnU1M1N1FkeWxVN3JIUTV1TUsxZVRYY090aVM0RHZIbXpWa1p2bW13M3pZWXpoS3IwR3duNl9KY1VScDJKVQ&q=https%3A%2F%2Fs3.amazonaws.com%2Fyoyo-www%2Fhtml5%2Ftutorials%2FSpaceRocksAssets.zip).
+
+- `instance_destroy()` will destroy whatever instance is calling this function. In `obj_ship > Collision With obj_asteroid Event` the ship instance is calling `instance_destroy()` and therefore the ship instance will be destroyed.
+
+- Note: All functions do something.  Some also _return_ a value.  The `keyboard_check()` function returns true or false; the `instance_create()` functions return an `ID`.  But `move_wrap` simply moves the function and does not return a value.
+
+- When an object is destroyed , it is deleted from our computer's memory along with all it's variables.
+
+- A local `var` can only be seen in the event it was created in. For example, obj_ship > Step uses `var inst`.  This cannot be referenced in obj_ship > Collision with obj_asteroid event.
+
+- For obj_bullet colliding with obj_asteroid: We can't use `"obj_asteroid.variable"`because `obj_asteroid` is the object instance for all asteroids.  We only want to refere to a **single** asteroid, so we have to get its **unique** instance `ID`.
