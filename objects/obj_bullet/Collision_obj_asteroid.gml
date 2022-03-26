@@ -1,5 +1,7 @@
 /// @description Bullet Hits Asteroid
 
+score += 10;
+
 // Destroy Bullet
 instance_destroy();
 

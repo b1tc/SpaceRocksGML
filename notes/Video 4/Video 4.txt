@@ -1,2 +1,15 @@
-### Video 4 Score, Lives & Effects
+### Video Four - Score, Lives & Effects
 
+- Global variables have a global scope, so can be accessed by any object.  We can declare new global variables: `global,newvariable = 5;`
+
+- Draw can be used forthings like text, shapes, and sprites.
+
+- We can only add two variables of the same type together, i.e., a string to another string.  However, we cannot add a string to a number.
+
+- Usually, **__all__** instances are destroyed when we move to a new room.  However, we can mark instances as **__persistent__** if we want them to remain in the game.
+
+- When placing text into a room we do not have to use the exact values of our author in the game; feel free to play with the numbers ad see what looks good to us.
+
+- Middle click on the function name to bring up information about how tp set the alignment using different constants (fa_center, fa_left, etc).
+
+- User Comment: I had a similar problem with boxes appearing for ENTER and TAB. Open fnt_text. At the bottom right there is a window with a string of alphanumeric characters. Select the part that says "default character" (a number in parentheses), then delete it using the "delete" button on the bottom left.

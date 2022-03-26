@@ -11,3 +11,29 @@ Video three provides a link to [Assets](https://www.youtube.com/redirect?event=v
 - A local `var` can only be seen in the event it was created in. For example, obj_ship > Step uses `var inst`.  This cannot be referenced in obj_ship > Collision with obj_asteroid event.
 
 - For obj_bullet colliding with obj_asteroid: We can't use `"obj_asteroid.variable"`because `obj_asteroid` is the object instance for all asteroids.  We only want to refere to a **single** asteroid, so we have to get its **unique** instance `ID`.
+
+----------
+Some user comments:
+
+If you want the bullet to spawn at the tip of the ship instead of the center, then I have just the code for you!
+
+var x_adj = cos(degtorad(image_angle)) * sprite_width/2;
+var y_adj = -sin(degtorad(image_angle)) * sprite_width/2;
+
+
+Then just add each variable to their respective coordinates for the bullet instance creation.
+
+var inst= instance_create_layer(x + x_adj, y + y_adj, "Instances", obj_bullet);
+
+We take the negative of y_adj because the y-axis is reversed in computer graphics. (down is positive, up is negative)
+
+I have to say, this is the most fun I've ever had doing trigonometry!
+
+--
+Very helpful indeed, but there's an easier way that requires no trigonometry:
+
+var x_adj = lengthdir_x(sprite_width/2, image_angle);
+var y_adj = lengthdir_y(sprite_width/2, image_angle);
+
+var inst = instance_create(x + x_adj, y + y_adj, "Instances", obj_bullet);
+https://docs.yoyogames.com/source/dadiospice/002_reference/maths/real%20valued%20functions/index.html
