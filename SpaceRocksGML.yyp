@@ -13,6 +13,7 @@
     {"id":{"name":"snd_die","path":"sounds/snd_die/snd_die.yy",},"order":1,},
     {"id":{"name":"spr_ship","path":"sprites/spr_ship/spr_ship.yy",},"order":3,},
     {"id":{"name":"spr_lives","path":"sprites/spr_lives/spr_lives.yy",},"order":2,},
+    {"id":{"name":"obj_asteroid","path":"objects/obj_asteroid/obj_asteroid.yy",},"order":1,},
     {"id":{"name":"spr_enemy_brute","path":"sprites/spr_enemy_brute/spr_enemy_brute.yy",},"order":0,},
     {"id":{"name":"spr_asteroid_huge","path":"sprites/spr_asteroid_huge/spr_asteroid_huge.yy",},"order":0,},
     {"id":{"name":"snd_laser","path":"sounds/snd_laser/snd_laser.yy",},"order":5,},
@@ -26,8 +27,9 @@
     {"id":{"name":"spr_enemy_hunter","path":"sprites/spr_enemy_hunter/spr_enemy_hunter.yy",},"order":1,},
     {"id":{"name":"spr_background","path":"sprites/spr_background/spr_background.yy",},"order":0,},
     {"id":{"name":"spr_exhaust","path":"sprites/spr_exhaust/spr_exhaust.yy",},"order":1,},
+    {"id":{"name":"obj_ship","path":"objects/obj_ship/obj_ship.yy",},"order":0,},
     {"id":{"name":"spr_starfield_0","path":"sprites/spr_starfield_0/spr_starfield_0.yy",},"order":2,},
-    {"id":{"name":"room0","path":"rooms/room0/room0.yy",},"order":0,},
+    {"id":{"name":"rm_game","path":"rooms/rm_game/rm_game.yy",},"order":0,},
   ],
   "Options": [
     {"name":"Android","path":"options/android/options_android.yy",},
@@ -48,7 +50,7 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"room0","path":"rooms/room0/room0.yy",},},
+    {"roomId":{"name":"rm_game","path":"rooms/rm_game/rm_game.yy",},},
   ],
   "Folders": [
     {"folderPath":"folders/Rooms.yy","order":11,"resourceVersion":"1.0","name":"Rooms","tags":[],"resourceType":"GMFolder",},
