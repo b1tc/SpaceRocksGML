@@ -36,4 +36,5 @@ var x_adj = lengthdir_x(sprite_width/2, image_angle);
 var y_adj = lengthdir_y(sprite_width/2, image_angle);
 
 var inst = instance_create(x + x_adj, y + y_adj, "Instances", obj_bullet);
+
 https://docs.yoyogames.com/source/dadiospice/002_reference/maths/real%20valued%20functions/index.html

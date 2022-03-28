@@ -9,6 +9,7 @@
     {"id":{"name":"spr_enemy_raider","path":"sprites/spr_enemy_raider/spr_enemy_raider.yy",},"order":2,},
     {"id":{"name":"obj_debris","path":"objects/obj_debris/obj_debris.yy",},"order":3,},
     {"id":{"name":"spr_asteroid_small","path":"sprites/spr_asteroid_small/spr_asteroid_small.yy",},"order":2,},
+    {"id":{"name":"Video 5","path":"notes/Video 5/Video 5.yy",},"order":2,},
     {"id":{"name":"spr_powerup","path":"sprites/spr_powerup/spr_powerup.yy",},"order":0,},
     {"id":{"name":"spr_bullet","path":"sprites/spr_bullet/spr_bullet.yy",},"order":0,},
     {"id":{"name":"spr_starfield_1","path":"sprites/spr_starfield_1/spr_starfield_1.yy",},"order":3,},

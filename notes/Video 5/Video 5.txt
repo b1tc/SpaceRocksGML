@@ -1,0 +1,42 @@
+### Video Five - Sound Effects & Polish
+
+- New asteroids will be sawned at the boundaries of the room.  What (x,Y) coordinates fulfill these parameters? 
+Top & Bottom: `x=irandom_range(0,room_width), y=0 or x=irandom_range(0,room_width), y=room_height.
+Sides: x=0,y=irandom_range(0,room_height) or  x=room_width,y=irandom_range(0,room_height).
+
+- We can leave a **__comment__** in the code to help with organization  Just put "//" before ANY line of code, and it will not be compiled or have any effect on our game.
+
+```javascript
+// flip a coin
+if choose(0,1) == 0
+{
+	// go down the side
+	var xx = choose(0, room_width);
+	var yy = irandom_range(0, room_height);
+}
+else
+{
+	// go top or bottom	
+	var xx = irandom_range(0, room_width);
+	var yy = choose(0, room_height);
+}
+
+instance_create_layer(xx,yy,"Instances", obj_asteroid);
+
+// repeat alarm every 4 seconds
+alarm[0] = game_get_speed(gamespeed_fps) * 4;
+```
+- SFX: beepbox.co or boscaceoil.net or sfbgames.itch.io/chiptone (sfbgames.com)
+
+- Music is only stopped when the game restarts or ends.  It can continue between rooms or on room restarts.
+
+Elements we could add:
+
+- multiple levels
+- enemy ships
+- boss fights
+- power ups (shields, lives, lasers)
+- vary spawn rate of asteroids
+- add objectives other than score
+
+See: Manual > GameMaker Language > GameMaker Language Reference > Maths and Numbers > Number Functions for random seed generator.
