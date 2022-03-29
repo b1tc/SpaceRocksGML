@@ -1,0 +1,30 @@
+### Space Mods - GML - Cameras (1/3) - GameMaker Studio 2
+
+Think of cameras in gamemaker exactly as how we would think of them in the real world. They are just a device to capture an image with.  We can think of a viewport like a separate display that we can show that footage from the camera on like a TV or a monitor.
+
+A camera and a viewport can be totally different sizes.  Our camera itself might have quite a small display but we can scale 
+that up on a large TV. In the same way the camera in our game controls the dimensions of the game world (i.e. game room) that were capturing so it's the window into our game. The viewport controls the actual size of the game display.  
+
+> The viewport **displays** what the camera **captures**.  The final game window size, for example, on a persons desktop is determined by the viewports dimensions.
+
+To start using viewports we just tick _Enable Viewports_ (in rm_start).  When we run the game we're only going to get a black screen.  Nothing is going to display even though all of our objects are set up from before and they are still there and drawing.  Nothing is being displayed because we didn't select a viewport to display.  We tick _Visible_ and that's going make both the camera and viewport visible and used by GameMaker.  We can see a white square in our room that shows the camera.  Its size must be adjusted. 
+
+> Note: By selecting _Room Settings > Enable Viewports > Visible_ we can now set both our camera and viewport properties.  We can also select object following.  Note also, the camera and/or viewport can be larger or smaller than the room size.  Therefore, we can adjust the height and width of the camera, the viewport, and the room.
+
+In our example, if the camera and the viewport are not multiples of each other we see a stretched image because the viewport aspect ratio makes our game look distorted.  If the camera and the viewport are multiples of each other we see a nicely scaled up (or down) version of our game.  Our game is originally set to 500 x 500 pixels.  A camera = 500 x 500 with viewport = 1000 x 1000 doubles the size of our game.  A 500 x 500 camera with a 1024 x 768 viewport stretches our game (distorts it) to fit the viewport.  Our game has a perfect square aspect ratio and if we use a rectangular aspect ratio our game is stretched and distorted to fit (camera = 500 x 500, viewport = 1024 x 768). 
+
+> Note that the viewport itself, if we set it up using room controls (not programmatically), can only be set up once.  Therefore the first room that runs and sets the viewport is going to determine the size of all subsequent viewports in all other rooms of the game.  Different viewport settings in other rooms are ignored.   The size of the viewport is determined by the viewport size of the first executable room.   This holds true even when we have different camera settings and different room sizes in other rooms.
+
+In other words, in our game, if we move to a different room (say rm_game), Enable Viewports and Visible in our Room Settings, and make the camera 200 x 200 it doesn't matter what the viewport is set to in this room.  It will still be 1000 x 1000 as predetermined by the settings in rm_start (the first executed room of the game). 
+
+> Enable object following in rm_game with _Room Settings > Object Following > obj_ship_ and adjust Borders (padding).  
+> This will keep our player centered in the camera. 
+
+The normal behavior for a camera is to only move when the instance being followed gets too close to a "buffer" zone that makes an invisible boundary around the edge of the view. This zone can be defined by using the **Horizontal Border** and **Vertical Border** values, so - for example - setting these values to 100 will mean that the view will not start to move and follow the character until it reaches 100 pixels from the edge of the view.  In our example, 100 is chosen for both Horizontal Border and Vertical Border values to be half the camera size.  This will always keep our player centered in the camera.
+
+See: Manual > The Asset Editors > Rooms > [Room Properties](https://manual-en.yoyogames.com/index.htm#t=The_Asset_Editors%2FRoom_Properties%2FRoom_Properties.htm)
+
+> Our movement looks jittery because our player's position (and speed) uses decimal values, however **object following** only moves the camera in whole values!  
+
+This will be smoothed out by programmatically controlling the camera.
+

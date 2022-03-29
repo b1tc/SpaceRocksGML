@@ -14,6 +14,7 @@
     {"id":{"name":"spr_bullet","path":"sprites/spr_bullet/spr_bullet.yy",},"order":0,},
     {"id":{"name":"spr_starfield_1","path":"sprites/spr_starfield_1/spr_starfield_1.yy",},"order":3,},
     {"id":{"name":"snd_die","path":"sounds/snd_die/snd_die.yy",},"order":1,},
+    {"id":{"name":"Video 6","path":"notes/Video 6/Video 6.yy",},"order":3,},
     {"id":{"name":"Video 3","path":"notes/Video 3/Video 3.yy",},"order":0,},
     {"id":{"name":"obj_game","path":"objects/obj_game/obj_game.yy",},"order":4,},
     {"id":{"name":"spr_ship","path":"sprites/spr_ship/spr_ship.yy",},"order":3,},
