@@ -1,5 +1,4 @@
-/// @description Insert description here
-
+/// @description move_wrap
 move_wrap(true, true, sprite_width/2);
 
 image_angle += 1;

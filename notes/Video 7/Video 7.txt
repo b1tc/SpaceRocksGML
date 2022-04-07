@@ -1,0 +1,24 @@
+### Space Mods - GML - Cameras (2/3) - GameMaker Studio 2
+
+In room's rm_game and rm_start set our camera and viewport back to default, i.e., deselect 
+Properties > Room Settings > Viewports and Cameras > Enable Viewports and Visible.
+
+We are going to set up our camera and viewports programatically.  Create obj_camera, set it persistent, and place it in rm_start.
+We want this object controlling the camera in the game and in all of the rooms.
+
+Create obj_camera > Room Start Event.  This will initialize our camera object in every room.
+
+NB: obj_camera > Create Event will only intialize our camera once in one room when created.  Even though its persistent it will not work when we change game rooms.
+A persistent object gets made only once. Camera and viewport properties need to be set in each room individually.  Room Start Event circumvents this problem.
+
+Remember: We use **var** to declare temporary (local) variables, which get deleted after the script has run (unlike instance and global variables).
+
+
+---
+User Comments
+When I run this, the game smears all the images together as it runs. The only solution I found was to go into rm_game's Viewports and Cameras and check "Clear Viewport Background". But that doesn't make sense because aren't we using a custom camera? I've watched the video repeatedly and I've followed every step as instructed, perfectly. Can anyone explain why this is happening?
+
+It's because your spr_background doesn't actually have black color to fill in the image, it has nothing at all, so nothing is being rendered there. If you use the fill tool there with black color it should fix.
+
+What you were doing was basically making it so that transparent parts of the background are reset to the black default that any room will have if no custom background is added.
+
