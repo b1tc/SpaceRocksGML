@@ -1,18 +1,45 @@
 ### Space Mods - GML - Cameras (2/3) - GameMaker Studio 2
 
-In room's rm_game and rm_start set our camera and viewport back to default, i.e., deselect 
-Properties > Room Settings > Viewports and Cameras > Enable Viewports and Visible.
+Recall:  The camera captures an image and the viewport displays the image on something like a TV or monitor or some other screen. A camera and a viewport can be totally different sizes.  The camera can be focused down to a small area but the viewport can scale the camera up to a large display.  The camera in our game controls the dimensions of the game world we are capturing.  The viewport controls the actual size of the game we display on our monitor or TV.
 
-We are going to set up our camera and viewports programatically.  Create obj_camera, set it persistent, and place it in rm_start.
-We want this object controlling the camera in the game and in all of the rooms.
+In order to set up our camera and viewport programmatically we must deselect our previous settings in each of our rooms.
+In room's `rm_game` and `rm_start` set our camera and viewport back to default, i.e., deselect  _Properties > Room Settings > Viewports and Cameras > Enable Viewports and Visible_.
 
-Create obj_camera > Room Start Event.  This will initialize our camera object in every room.
+We are going to set up our camera and viewports programatically.  Create `obj_camera`, set it persistent, and place it in `rm_start`.  We want this object controlling the camera in the game and in all of the rooms.
 
-NB: obj_camera > Create Event will only intialize our camera once in one room when created.  Even though its persistent it will not work when we change game rooms.
-A persistent object gets made only once. Camera and viewport properties need to be set in each room individually.  Room Start Event circumvents this problem.
+Create `obj_camera > Room Start Event`.  This will initialize our camera object in every room.
+
+NB: `obj_camera > Create Event `will only initialize our camera once in one room when created.  Even though it's persistent it will not work when we change game rooms.  A persistent object gets made only once. Camera and viewport properties need to be set in each room individually.   `obj_camera > Room Start Event` circumvents this problem.  We could have `obj_game` spawn `obj_camera` in all the rooms however `obj_camera > Room Start` is a better method.
+
+`cameraWidth, cameraHeight` and `displayWidth, displayHeight` are simply settings.  We need to apply these settings using `window_set_size(displayWidth,displayHeight)`. With this function we can change the size of the game window. 
+
+See: _Manual > GameMaker Language > GML Code > GML Code Reference > Cameras And Display > The Game Window > [window_set_size](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FCameras_And_Display%2FThe_Game_Window%2Fwindow_set_size.htm)_
+
+> `view_enabled = true` is similar to setting `rm_game > Properties > Room Settings > View and Cameras > Enable Viewports`.
+> 
+> `view_visible[0] = true` is similar to setting `rm_game > Properties > Room Settings > View and Cameras > Enable Viewports  > Viewport0 > Visible`.
+> 
+> `camera_set_view_size` will update the size of the view camera within the room. `camera_set_view_size(view_camera[0], cameraWidth, cameraHeight)` will set the view camera size for the camera assigned to `view port[0]`.
+
+See: _Manual > GameMaker Language > GML Code > GML Code Reference > Cameras And Display > Cameras And Viewports > [camera_set_view_size](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FCameras_And_Display%2FCameras_And_Viewports%2Fcamera_set_view_size.htm)_
+
+The Application Surface must match the display. GameMaker doesn't actually draw directly to the screen, but rather draws to a surface called the **Application Surface**.  This surface is basically a blank "canvas" that can then later be manipulated before being drawn to the screen when needed. In most cases GameMaker handles this for us although we can also manipulate it in code.
+
+See: _Manual > GameMaker Language > GML Code > GML Code Reference > Drawing > [Surfaces](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FSurfaces%2FSurfaces.htm)_
+
+`surface_resize`  will resize a surface to the given dimensions (in pixels). The "surface_id" is that of a surface we have created previously, or the `application_suface`, and the function will resize that surface.  In our example we are using the [application surface](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FSurfaces%2Fapplication_surface.htm).  This surface is permanently available and is where the game is drawn by GameMaker.
+
+See: _Manual > GameMaker Language > GML Code > GML Code Reference > Drawing > Surfaces > [surface_resize](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FSurfaces%2Fsurface_resize.htm)_
 
 Remember: We use **var** to declare temporary (local) variables, which get deleted after the script has run (unlike instance and global variables).
 
+`Alarm[0]` is used to center the game window in the monitor using [`window_center`](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FCameras_And_Display%2FThe_Game_Window%2Fwindow_center.htm).   This function can center the game window in the display when the target module is Windows, Ubuntu (Linux) or macOS, or we can center it in the browser if the target module is HTML5. This function has no effect on any other device. The camera transformations don't execute until after the first step so we need to `window_center` in the next step and  in order to do this we need to use an `alarm`.
+
+The Step Event is used to have the camera follow the player.  Remember that `obj_camera` is a persistent object that runs at Room Start in every room of our game BUT `obj_ship` only exists in `rm_game`.  Therefore, we have to check to make sure our instance exists before we track it with our camera (keep in mind that cameras are anchored to top left).
+
+We swap our `obj_game > Draw Event` for `obj_game > Draw GUI Event` so that our HUD moves with our camera.  Now our HUD is relative to our display and not the room.  However, as a result and similar to the Application Surface the GUI also needs to be resized. We use  `display_set_gui_size(cameraWidth,cameraHeight)` in `obj_camera > Room Start`.
+
+[`display_set_gui_size`](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FCameras_And_Display%2Fdisplay_set_gui_size.htm) will only affect things drawn in the Draw GUI Event and can be used to set a specific width and height for all GUI components in that event,  and no matter what size of display or window is used to display the GUI, it will be scaled to fit correctly. 
 
 ---
 User Comments
