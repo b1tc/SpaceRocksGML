@@ -2,6 +2,7 @@
   "resources": [
     {"id":{"name":"snd_zap","path":"sounds/snd_zap/snd_zap.yy",},"order":4,},
     {"id":{"name":"Video 4","path":"notes/Video 4/Video 4.yy",},"order":1,},
+    {"id":{"name":"track_with_camera","path":"scripts/track_with_camera/track_with_camera.yy",},"order":1,},
     {"id":{"name":"snd_hurt","path":"sounds/snd_hurt/snd_hurt.yy",},"order":6,},
     {"id":{"name":"spr_ship_powerups","path":"sprites/spr_ship_powerups/spr_ship_powerups.yy",},"order":1,},
     {"id":{"name":"spr_ship_debris","path":"sprites/spr_ship_debris/spr_ship_debris.yy",},"order":2,},

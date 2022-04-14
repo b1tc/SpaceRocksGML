@@ -16,19 +16,12 @@ view_enabled = true;
 view_visible[0] = true;
 camera_set_view_size(view_camera[0],global.cameraWidth,global.cameraHeight);
 
-if instance_exists(target)
-{
-	// Keep in mind that cameras are anchored to top left
-	// so we have to shift our camera to the center.
-	 global.cameraX = target.x - global.cameraWidth/2;
-	 global.cameraY = target.y - global.cameraHeight/2;
-	 
-	 // clamp camera so room wrap is smoother
-	 global.cameraX = clamp(global.cameraX,0,room_width-global.cameraWidth);
-	 global.cameraY = clamp(global.cameraY,0,room_width-global.cameraHeight);
-}
-
-
+// Make sure our instance exists before we track it with our camera once
+// before Room Start Event to avoid collisions with asteroids when
+// target = obj_ship instansiates in room.
+track_with_camera(view_camera[0], target);
+ 
+ 
 // initialize display 
 displayScale = 2;
 displayWidth = global.cameraWidth * displayScale;
