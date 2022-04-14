@@ -1,0 +1,93 @@
+### Space Mods - GML - Cameras (3/3) - GameMaker Studio 2
+
+Asteroids are still spawning around the room perimeter and we need to spawn them relative to our camera perimeter.
+See: `obj_game > Room Start Event`.
+
+Script assets have changed for v2.3.0 [see](https://help.yoyogames.com/hc/en-us/articles/360005277377) for more information.
+
+Our function `spawn_off_camera` will be used to spawn both asteroids and enemies.
+
+Keep in mind our camera is a rectangle with origin at the upper left `(cameraX, cameraY)` and lower right at `(cameraX+cameraWidth, cameraY+cameraHeight)`.
+
+We make `(cameraX, cameraY)` global so any object can access them, `(global.cameraX, global.cameraY)`.   We do the same for `(global.cameraWidth, global.cameraHeight)`.  
+
+Most objects do not need to access the display `(displayWidth, displayHeight)` so we leave those local.
+
+Introduce the `spawn_off_camera` function in `obj_game > Room Start` and `obj_game > Alarm0`.
+
+> NB: Because the `spawn_off_camera` function is in `obj_game > Room Start` it will execute before the camera updates its position.  This will cause asteroids to spawn before we want them to.  An asteroid may spawn on top of the ship and cause an immediate loss of one life. Remember the camera starts in the upper left corner of the room at `(0,0)`. It does not update its position until the `obj_camera > Step Event`.  The `obj_camera > Step Event` does not run until after `obj_game > Room Start`. Both `obj_camera` and `obj_game` have `Room Start` events but it doesn't matter since in either case `Room Start` will execute before `Step`.
+> 
+> To circumvent this we have to run the code from `obj_camera > Step`
+> 
+> ```javascript
+> if instance_exists(target)
+> {
+> 	// Keep in mind that cameras are anchored to top left
+> 	// so we have to shift our camera to the center.
+> 	 global.cameraX = target.x - global.cameraWidth/2;
+> 	 global.cameraY = target.y - global.cameraHeight/2;
+> 	 
+> 	 // clamp camera so roomwrap is smoother
+> 	 global.cameraX = clamp(global.cameraX,0,room_width-global.cameraWidth);
+> 	 global.cameraY = clamp(global.cameraY,0,room_width-global.cameraHeight);
+> }
+> ```
+> once in the `obj_camera > Room Start` event where we initially set up the camera, i.e., initialize the camera. 
+> This causes the camera to update it's position when `obj_camera` runs its `Room Start` event.
+
+We still may have a problem because both `obj_camera` and `obj_game` have `Room Start` events and one will execute before the other.  However, we can determine which of these two objects will run first by ordering them in _rm_start > Properties > Instance Creation Order_ dialog box.  We want the camera object to execute its `Room Start` event _before_ the game object.  To do this drag `obj_camera` above `obj_game` in the Instance Creation Order list.
+
+---
+#### User Comments
+
+> For anyone interested I came up with a zoom add-on for this camera. Here it is:
+> (Step Event)
+> ```javascript
+> if (mouse_wheel_down()){
+>         global.global.cameraWidth = lerp(global.global.cameraWidth, 1080, 0.1);
+>         global.global.cameraHeight = lerp(global.global.cameraHeight, 18/32*1080, 0.1);
+>         camera_set_view_size(view_camera[0], global.global.cameraWidth, global.global.cameraHeight);
+>         camera_set_view_border(view_camera[0], global.global.cameraWidth, global.global.cameraHeight);
+> }else if (mouse_wheel_up()){
+>         global.global.cameraWidth = lerp(global.global.cameraWidth, 520, 0.1);
+>         global.global.cameraHeight = lerp(global.global.cameraHeight, 18/32*520, 0.1);
+>         camera_set_view_size(view_camera[0], global.global.cameraWidth, global.global.cameraHeight);
+>         camera_set_view_border(view_camera[0], global.global.cameraWidth, global.global.cameraHeight);
+> } 
+>```
+
+> This is the code for any versions after 2.3. Idk if I did it correctly but it seems to work.
+> ```javascript
+> function spawn_off_camera(obj, num)
+> {
+> obj = argument0;
+> num = argument1;
+> pad = 64;
+> repeat(num)
+> {
+> 	xx = random_range(0,room_width);
+> 	yy = random_range(0,room_height);
+> 	while(point_in_rectangle(xx,yy, global.cameraX - pad, global.cameraY - pad, global.cameraX + global.cameraWidth + pad, global.cameraY + global.cameraHeight + pad))
+> 	{
+> 		xx = random_range(0,room_width);
+> 		yy = random_range(0,room_height);
+> 	}
+> 	instance_create_layer(xx,yy,"instances",obj);
+> 	}
+> }
+> ```
+
+
+> If you are following this at a time around my comment then you need to check how the scripts work. They have been changed [_read here_](https://help.yoyogames.com/hc/en-us/articles/360005277377).
+> 
+> It is now not enough to name your script like it should be called, rather you define a function inside the script which can then be called later. Otherwise you will get an "expected  0 arguments got 2" error.
+> ```javascript
+> /// @function spawn_off_camera(object,number)
+> /// @description spawn object number times off the camera
+> /// @arg obj
+> /// @arg number
+> function spawn_off_camera(argument0, argument1)
+> {
+>    //everything she typed in script goes in here
+> }
+>```

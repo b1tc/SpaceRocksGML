@@ -11,7 +11,7 @@ Create `obj_camera > Room Start Event`.  This will initialize our camera object 
 
 NB: `obj_camera > Create Event `will only initialize our camera once in one room when created.  Even though it's persistent it will not work when we change game rooms.  A persistent object gets made only once. Camera and viewport properties need to be set in each room individually.   `obj_camera > Room Start Event` circumvents this problem.  We could have `obj_game` spawn `obj_camera` in all the rooms however `obj_camera > Room Start` is a better method.
 
-`cameraWidth, cameraHeight` and `displayWidth, displayHeight` are simply settings.  We need to apply these settings using `window_set_size(displayWidth,displayHeight)`. With this function we can change the size of the game window. 
+`global.cameraWidth, global.cameraHeight` and `displayWidth, displayHeight` are simply settings.  We need to apply these settings using `window_set_size(displayWidth,displayHeight)`. With this function we can change the size of the game window. 
 
 See: _Manual > GameMaker Language > GML Code > GML Code Reference > Cameras And Display > The Game Window > [window_set_size](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FCameras_And_Display%2FThe_Game_Window%2Fwindow_set_size.htm)_
 
@@ -19,7 +19,7 @@ See: _Manual > GameMaker Language > GML Code > GML Code Reference > Cameras And 
 > 
 > `view_visible[0] = true` is similar to setting `rm_game > Properties > Room Settings > View and Cameras > Enable Viewports  > Viewport0 > Visible`.
 > 
-> `camera_set_view_size` will update the size of the view camera within the room. `camera_set_view_size(view_camera[0], cameraWidth, cameraHeight)` will set the view camera size for the camera assigned to `view port[0]`.
+> `camera_set_view_size` will update the size of the view camera within the room. `camera_set_view_size(view_camera[0], global.cameraWidth, global.cameraHeight)` will set the view camera size for the camera assigned to `view port[0]`.
 
 See: _Manual > GameMaker Language > GML Code > GML Code Reference > Cameras And Display > Cameras And Viewports > [camera_set_view_size](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FCameras_And_Display%2FCameras_And_Viewports%2Fcamera_set_view_size.htm)_
 
@@ -37,7 +37,7 @@ Remember: We use **var** to declare temporary (local) variables, which get delet
 
 The Step Event is used to have the camera follow the player.  Remember that `obj_camera` is a persistent object that runs at Room Start in every room of our game BUT `obj_ship` only exists in `rm_game`.  Therefore, we have to check to make sure our instance exists before we track it with our camera (keep in mind that cameras are anchored to top left).
 
-We swap our `obj_game > Draw Event` for `obj_game > Draw GUI Event` so that our HUD moves with our camera.  Now our HUD is relative to our display and not the room.  However, as a result and similar to the Application Surface the GUI also needs to be resized. We use  `display_set_gui_size(cameraWidth,cameraHeight)` in `obj_camera > Room Start`.
+We swap our `obj_game > Draw Event` for `obj_game > Draw GUI Event` so that our HUD moves with our camera.  Now our HUD is relative to our display and not the room.  However, as a result and similar to the Application Surface the GUI also needs to be resized. We use  `display_set_gui_size(global.cameraWidth,global.cameraHeight)` in `obj_camera > Room Start`.
 
 [`display_set_gui_size`](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FCameras_And_Display%2Fdisplay_set_gui_size.htm) will only affect things drawn in the Draw GUI Event and can be used to set a specific width and height for all GUI components in that event,  and no matter what size of display or window is used to display the GUI, it will be scaled to fit correctly. 
 

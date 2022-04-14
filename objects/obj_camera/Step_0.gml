@@ -12,12 +12,12 @@ if instance_exists(target)
 {
 	// Keep in mind that cameras are anchored to top left
 	// so we have to shift our camera to the center.
-	 cameraX = target.x - cameraWidth/2;
-	 cameraY = target.y - cameraHeight/2;
+	 global.cameraX = target.x - global.cameraWidth/2;
+	 global.cameraY = target.y - global.cameraHeight/2;
 	 
 	 // clamp camera so roomwrap is smoother
-	 cameraX = clamp(cameraX,0,room_width-cameraWidth);
-	 cameraY = clamp(cameraY,0,room_width-cameraHeight);
+	 global.cameraX = clamp(global.cameraX,0,room_width-global.cameraWidth);
+	 global.cameraY = clamp(global.cameraY,0,room_width-global.cameraHeight);
 }
 
- camera_set_view_pos(view_camera[0],cameraX, cameraY); 
+ camera_set_view_pos(view_camera[0],global.cameraX, global.cameraY); 
