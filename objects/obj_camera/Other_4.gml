@@ -23,7 +23,7 @@ if instance_exists(target)
 	 global.cameraX = target.x - global.cameraWidth/2;
 	 global.cameraY = target.y - global.cameraHeight/2;
 	 
-	 // clamp camera so roomwrap is smoother
+	 // clamp camera so room wrap is smoother
 	 global.cameraX = clamp(global.cameraX,0,room_width-global.cameraWidth);
 	 global.cameraY = clamp(global.cameraY,0,room_width-global.cameraHeight);
 }
