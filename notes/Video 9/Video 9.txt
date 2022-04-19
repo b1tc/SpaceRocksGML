@@ -1,0 +1,84 @@
+### Video 9 - Space Mods - GML - Parallax Backgrounds - GameMaker Studio 2
+
+Parallax gives the illusion of depth by moving background layers at different speeds.  The further away a layer is the less movement it has.   The closer a layer is the more movement it has.  Combining layers in this fashion gives the illusion of depth.
+
+The finished star field will have multiple layers of stars.  Some aren't moving at all and some are moving a little bit. They're all at slightly different speeds and this is causing a kind of parallax effect.  Basically it's creating an illusion of 3d depth. We can judge where the stars are by how fast they're moving. Because they're moving quite slowly we get the effect that they're very far away from us and the farthest stars, those that aren't really moving at all those must be very far away.  This is a common effect for many 2d games.
+
+First we establish the effect working on the star field that we already have from the camera videos. When we move the player the star field of course isn't moving at all. The background stays where it is. If we move the background a little in the same direction as the camera it is going to look like our movements have less of an effect on the background and that will give us the illusion that we're actually very far away from it. The stars are very far in the distance depending on how much the star field moves relative to the camera but we'll get a better idea of this when we see it happening. 
+
+We do this from within the camera object itself.   In `obj_camera > step event` we will move the position of the background. We already know where the camera is because we just moved it with code and what we will do is use the `layer_x` function to position the background. We see that `layer_x`  is looking for a `layer ID` and then a `position`.
+
+[Open the documentation](https://manual.yoyogames.com/GameMaker_Language/GML_Reference/Asset_Management/Rooms/General_Layer_Functions/layer_x.htm) page because there is one thing that we should note. We can supply either the layer name as a string but this will have a performance impact.  This means is we can put the actual name of the layer as a string in the function call. In our game room, `rm_game`, we can see that it's called `Background` so let's put that in. 
+
+```javascript
+layer_x("Background", global.cameraX);
+layer_y("Background", global.cameraY);
+```
+
+The documentation says that this isn't the most performant way to do it and we could instead be supplying the `layer ID`. For our purposes it doesn't  matter  because we're not making a high performance game.  We could for example just get the `layer ID` once in the `create event` and then use that instead. 
+
+We are moving the layer to where the camera is. It is moving at the same time the camera is moving and it will look like it's static. What effect does this have on the game? We've moved its `(X,Y)` and when the ship moves we can see that it looks like the stars not moving at all.  This looks strange because when there aren't any asteroids present we don't have a point of reference for the ship. Let's  multiply this by 0.9.
+
+```javascript
+layer_x("Background", global.cameraX * 0.9);
+layer_y("Background", global.cameraY * 0.9);
+```
+
+We can start to see the effects happening and it looks more normal. Now we introduce more background layers to heighten the effect.  Make use of the four different pre-made background star field sprites. One is a gradient that overlays all of the images to give the background a small amount of variance.
+
+First, get rid of the original background layer star field sprite and return the layer to black so that we have something in the complete background.  We will have four layers called `Parallax_0, Parallax_1, Parallax_2, Parallax_3, Parallax_4`. Assign the corresponding star field sprite to each layer where layer `Parallax_4` is the gradient sprite. Tile each horizontally and vertically. Note that the gradient is too strong so we turn it down by turning down its alpha. This makes the gradient effect more subtle.  Now it's a kind of slight hue shift.
+
+Head back to the camera object to move these layers. We move each layer by a slightly different amount to achieve the effect.  Remember, if we multiply by 1 it means it's going to move exactly with the camera and it will appear as if it is not moving at all.  The lower this number is the closer it will look to the player because it's going to be less static. If things are moving with the camera then they are going to look further away. For layer `_0` we want a really slight effect therefore keep the multiplier high. Remember that `_0` is the layer that we want furthest and in the distance. We simply decrease the numbers for each parallax layer.  These numbers are arbitrary so feel free to have a play with these to find a nice subtle effect.
+
+```javascript
+	// Parallax Effect
+	layer_x("Parallax_0", global.cameraX * 0.98);
+	layer_y("Parallax_0", global.cameraY * 0.98);
+
+	layer_x("Parallax_1", global.cameraX * 0.92);
+	layer_y("Parallax_1", global.cameraY * 0.92);
+
+	layer_x("Parallax_2", global.cameraX * 0.90);
+	layer_y("Parallax_2", global.cameraY * 0.90);
+
+	layer_x("Parallax_3", global.cameraX * 0.88);
+	layer_y("Parallax_3", global.cameraY * 0.88);
+```
+
+When we run we should be getting a layered effect with different layers moving at different speeds and appearing at different depths.
+
+
+
+
+
+--- 
+### User Comments
+
+If you don't want to repeat the same line of code in the camera script, you can make a function for the parallax effect:
+
+1) Go to scripts and create a new script
+2) Write this code below
+
+```javascript
+///@function parallax_effect(layer_name,num);
+///@arg string
+///@arg number
+
+function parallax_effect(layer_name, num){
+	layer_x(layer_name, global.cameraX*num);
+	layer_y(layer_name, global.cameraY*num);
+}
+```
+
+3) In the camera script it will look like this
+ 
+```javascript
+parallax_effect("Background", .9);
+parallax_effect("Parallax_0", .7);
+parallax_effect("Parallax_1", .5);
+parallax_effect("Parallax_2", .3);
+parallax_effect("Parallax_3", .1);
+```
+
+--- 
+
