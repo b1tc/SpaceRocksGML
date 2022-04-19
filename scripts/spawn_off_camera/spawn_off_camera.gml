@@ -1,8 +1,8 @@
-
 /// @function spawn_off_camera(object,number)
 /// @description spawn object number times off the camera
 /// @arg obj
 /// @arg number
+
 function spawn_off_camera(argument0, argument1)
 {
 	var obj = argument0;
