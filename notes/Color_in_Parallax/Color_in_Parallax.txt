@@ -1,0 +1,34 @@
+Either as an addition or an alternative color can be used to describe a sense of distance and atmospheric perspective in our landscapes.
+
+6 ways to increase depth in a landscape painting
+
+1. Overlap objects within your composition so that some are forced forward or backward in the scene.
+2. Paint with less detail, texture, and definition the further back you go in the landscape.
+3. Paint using lighter values and less contrast for distant elements.
+4. Use cooler colors to push elements farther into the background.
+5. Use warmer, darker colors to bring elements forward into the foreground.
+6. As elements recede in the distance, paint them at a much smaller scale than objects in the foreground.
+
+[Reference](https://emptyeasel.com/2009/10/08/how-to-paint-landscapes-with-depth-6-tips-for-creating-distance-in-any-painting/)
+
+This is common technique shared among artists [search](https://duckduckgo.com/?q=colour+Creating+Distance&t=osx&ia=web&atb=v258-1).
+
+In `rm_game` we added color and through use of the Inspector Filters & Effects to enhance the Parallax effect. Layers Parallax_0 and Parallax_1 are the furthest away from the camera.  
+
+New settings for Parallax_0:
+
+- RGB Color: r 159 g 124 b 178
+- Alpha: 255
+- HSV Color: h 279 s 30 v 70
+- HEX: 9F7CB2
+- Filter & Effects: Distort 1/120/0/0 Default Texture
+
+New settings for Parallax_1:
+
+- RGB Color: r 109 g 38 b 127
+- Alpha: 255
+- HSV Color: h 288 s 70 v 50
+- HEX: 6D267F
+- Filter & Effects: None
+
+Layers Parallax_2 and Parallax_3:  No changes made.
