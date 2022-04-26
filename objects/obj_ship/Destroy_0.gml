@@ -1,5 +1,4 @@
-/// @description Ship Hits Asteroid
-//Fires when Ship Bounding Box hits Asteroid Bounding Box
+/// @description Self, Update Score, Run Debris
 
 lives -= 1;
 
@@ -10,8 +9,6 @@ with(obj_game)
 
 audio_play_sound(snd_hurt, 1, false);
 
-// Ship destroy's itself.
-instance_destroy();
 
 repeat(10)
 {

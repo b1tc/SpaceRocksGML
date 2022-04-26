@@ -1,0 +1,50 @@
+### Video 11 Space Mods - GML - Enemy Factions (2/3) - GameMaker Studio 2
+
+- In `obj_game > create` we will use an `enum` to organize our Factions,  
+- In all our enemy ship sprites set up a collision mask,
+- Create an enemy ship object for each enemy ship,
+- Create `obj_par_enemy` and add enemy ship objects as children objects,
+- Create `obj_par_ally` and add ship object as child object,
+- Create `obj_faction_neutral` and add asteroid object as child object,
+- Add Enemy, Ally and Neutral group to Asset Browser for organization,
+- Create `obj_faction` and add `obj_faction_ally, obj_faction_neutral, obj_faction_enemy`.
+
+
+![ObjectFactions](https://user-images.githubusercontent.com/52499915/165193463-b73dcafd-2d11-4683-8c95-8c23c3d0a95f.png)
+
+
+##### Set Up Variables
+
+In `obj_faction > create` set a default faction, `faction = factions.neutral`.  Now if we navigate to each of our children objects `obj_faction_ally, obj_faction_neutral, obj_faction_enemy` we will see a grayed out `create event` with the Inheritance icon.  If we right-click on this event we can open  Parent Event, Inherit Event, or Override Event. 
+
+For `obj_faction_ally & obj_faction_enemy` we do not want `faction = factions.neutral`.  We want to choose override.  In the create event of `obj_faction_enemy` set `faction = factions.enemy`.  Now `obj_par_enemy` will inherit the enemy faction and all the enemy ships will inherit the enemy faction.  Likewise, for `obj_faction_ally` override and set `faction = factions.ally`. 
+
+> NB: Since `obj_asteroid` is a child of `obj_faction_neutral` is a child of `obj_faction` and is neutral it would seem that we are done.  However, `obj_asteroid` has its own `create event`, from our previous work, essentially overriding `obj_faction_neutral` that inherits from `obj_faction`.  To ensure that `obj_asteroid` inherits `faction = factions.neutral` we must include the function `event_inherited` in the `create event` of `obj_asteroid`.
+
+##### User Event 1
+Now that we have our objects set-up we can turn our attention to `obj_bullet`.  We want to change how `obj_bullet` interacts with the other objects.  At the moment `obj_bullet` only collides with `obj_asteroid`.  Because `obj_bullet` has no alignment (ally, enemy, neutral) it has its own set of rules.
+
+We want to change our `obj_bullet` collision with `obj_asteroid` to collision with `obj_faction`.  Instead of using `with(other)` and a chain  of `if` statements or an exhaustive `switch` because of the long and tedious code needed to cover all cases we will create _custom events_ for the specific objects.
+
+We _cut_ all the code from `obj_bullet > collision obj_faction`, formally `obj_asteroid` and in `obj_asteroid` we choose _Add Event > Other > User Events > User Event 1_.  
+
+> NB: We will purposely use  _User Event 1_ in the other `factions` when needed.  We control when this event is triggered! It does not run to a particular trigger.  
+
+_Paste_ all our code in this event.  We don't need `with(other)` here because we are in `obj_asteroid` .  We remove one of our `instance_destroy` functions because we are basically separating our concerns and `obj_bullet` will have its own `instance_destroy` function in its `obj_bullet > collision obj_faction` event.
+
+In `obj_bullet > collision obj_faction`  check if other object we are colliding with is part of our faction.  If the object we are colliding with is a member of our faction then we don't want it to take damage.  Remember we are now using our  `obj_bullet` for all factions! In this case: `if (other.faction == faction) exit;`
+
+To damage the object the bullet is colliding with use `with(other) event_perform(ev_other, ev_user1);` and notice how we will always use `ev_user1` when setting up our custom collision code.
+
+Because the bullet originates in the hit box of `obj_ship` it will immediately destroy itself when fired, i.e., the `obj_bullet` cannot pass through the player.  We need to check if `obj_bullet` is hitting its creator object!  Therefore, we do need an exception  for its creator.  Create new variables in `obj_bullet > create`.  Add `if (other.id  == creator) exit;` in ` obj_bullet > collision obj_factions`. 
+
+> NB: Thanks to YouTube User sidraptor, Alex Smith and others: Due to the new update, some things are a bit broken.  If you are having a problem where the bullets do not exit the ship, change the following. In `obj_bullet > collision obj_faction`  the statement `if(other == creator) exit; `should be `if(other.id == creator) exit;` the `.id` must be added for it to work.
+
+##### Final Bits
+- Replace `obj_bullet > outside room` event with `obj_bullet > step` and destroy `obj_bullet` when it leaves the camera. 
+- Add `obj_ship > user event 1` and `obj_ship > destroy` and move code from `obj_bullet > collision obj_asteroid` to `obj_bullet > destroy` .
+- Change `obj_bullet > collision obj_asteroid` to `obj_bullet > collision obj_faction` .
+- `obj_bullet` needs `Faction` when fired. Cut code from  `obj_ship > step > if keyboard_check_pressed(vk_space)` and place it into a script function named `create_bullet`.  This can now be used by any object that fires a bullet.
+- Finally colorize objects based on their faction.
+
+

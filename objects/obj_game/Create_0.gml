@@ -7,3 +7,9 @@ draw_set_font(fnt_text);
 
 // Change Random Seed When Run
 randomize();
+
+enum factions {
+	neutral,
+	ally,
+	enemy
+}
