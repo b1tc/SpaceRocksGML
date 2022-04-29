@@ -25,7 +25,7 @@
 		faction = _fac;
 		creator = _creator;
 		 
-		// Colorize Bullet Accroding to Faction
+		// Colorize Bullet According to Faction
 		switch faction 
 		{
 			case factions.ally: image_blend = c_aqua; break;

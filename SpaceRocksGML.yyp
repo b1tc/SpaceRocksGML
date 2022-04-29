@@ -39,6 +39,7 @@
     {"id":{"name":"spr_asteroid_med","path":"sprites/spr_asteroid_med/spr_asteroid_med.yy",},"order":1,},
     {"id":{"name":"rm_start","path":"rooms/rm_start/rm_start.yy",},"order":1,},
     {"id":{"name":"snd_lose","path":"sounds/snd_lose/snd_lose.yy",},"order":2,},
+    {"id":{"name":"Video 12","path":"notes/Video 12/Video 12.yy",},"order":12,},
     {"id":{"name":"Color_in_Parallax","path":"notes/Color_in_Parallax/Color_in_Parallax.yy",},"order":10,},
     {"id":{"name":"Video 10","path":"notes/Video 10/Video 10.yy",},"order":9,},
     {"id":{"name":"obj_faction","path":"objects/obj_faction/obj_faction.yy",},"order":13,},

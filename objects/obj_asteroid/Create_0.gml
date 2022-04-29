@@ -11,4 +11,5 @@ image_angle = irandom_range(0,359);
 
 speed = 1;
 
-image_blend = make_colour_hsv(20, 255, 200);
+// colorize our asteroids
+image_blend =  c_orange;  // make_colour_hsv(20, 255, 200);

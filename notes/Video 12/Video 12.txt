@@ -1,0 +1,53 @@
+### Video 12 Space Mods - GML - Enemy Factions (3/3) - GameMaker Studio 2
+
+In `obj_par_enemy`:
+- we first set up common behaviors and common properties,
+- remember to add `event_inherited` to retain all variables from the parent `obj_faction_enemy`,
+- add a `destroy event` and play a sfx, add the debris field, and add to the `score` based on `object_index`,
+- add `outside room` event and add the `move_wrap` code,
+- add `user event 1` and add code to reduce `HP` and `instance_destroy`.
+
+##### Make changes in individual enemy objects.
+
+In `obj_brute`:
+- _override_ `create` event,
+- again, `event_inherited` to retain all variables from the parent `obj_par_enemy`,
+- modify `HP` and `speed` and stop animating the frames with `image_speed`.
+
+In `obj_game`:
+- spawn enemies for preliminary testing in `room start` using `spawn_off_camera` function.
+
+In `obj_raider`:
+- add `step event` add a very basic bot behavior based on if the player is in a specified range,
+- add `create` event, remember `event_inherited()`,  and declare `bulletCounter`.
+
+> We will copy and paste this code in our other enemy objects but if we want finer behavior we will think about separate script functions.  This might also be a point where we can share code and optimize and have a few scripts for turning to face the player but for now just keep it simple and reuse the code. In other words, abstract code into reusable script so we can just change the variables.  For example we might make it that we can just set a radius for the different objects, etc.
+
+In `obj_hunter`:
+- add `step` event and paste bot behavior code from `obj_raider`,
+- add `create` event, remember `event_inherited()` and declare `bulletCounter`,
+- change bullet speed from 4 to 8 in `create_bullet` script function,
+- move toward player using `direction = image_angle`,  
+- if we are too close to the player decrease the hunter speed using `if point_distance` statement/function,
+- set `bulletSpeed` to 40 frames instead of 60,
+- set back to original `speed` instead of rotating back to original `direction`.
+
+In `obj_brute`:
+- add and paste bot behavior code into `step` event,
+- delete the _if we are too close to the player decrease the hunter speed_ using `if point_distance` statement/function,
+- delete shooting code as well,
+- add increase speed every frame it is chasing player code,
+- change sprite frame based on `HP`,
+- set `originalSpeed` to 1 for the brute.
+
+> Move `originalSpeed = speed` and `bulletCounter = 0` into `obj_par_enemy` because both are shared among enemies.  Delete `obj_hunter > create event` and `obj_raider > create event` because they are no longer needed.
+
+
+We've set up all of the factions and all of the enemies now and we have a really nice flexible system for adding in new objects.
+
+-----
+##### User Commsnts
+
+From: TheGrimriftstalker
+For the current release of GameMaker2, we can right-click on `create` event (or any events you wish to override) and select _Inherit Event_ and it will do the `event_inherited()` code on its own. 
+
