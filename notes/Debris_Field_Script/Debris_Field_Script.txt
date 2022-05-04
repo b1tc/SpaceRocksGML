@@ -1,0 +1,34 @@
+We want to write a script function that adds the `factions` color to the debris field it creates when it is destroyed.
+
+In the following objects:
+
+- `obj_ship > destroy`
+- `obj_asteroid > user event 1`
+- `obj_par_enemy > destroy`
+
+we are reproducing the following:
+
+```javascript
+repeat(10) 
+{ 
+	instance_create_layer(x,y,"Instances", obj_debris); 
+}
+```
+
+Let us replace this with the following script function:
+
+```javascript
+///@description make_debris_field
+function make_debris_field(){
+
+	// whatever object is calling this function that will be the scope of the object ID
+	// and hence the "creator".
+	var _creator = id;
+	
+	repeat(10)
+	{
+		var inst = instance_create_layer(x,y,"Instances", obj_debris);
+		inst.image_blend = _creator.image_blend;
+	}
+}
+```

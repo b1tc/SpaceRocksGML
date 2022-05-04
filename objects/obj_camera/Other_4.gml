@@ -34,5 +34,6 @@ surface_resize(application_surface,displayWidth,displayHeight);
 display_set_gui_size(global.cameraWidth,global.cameraHeight);
 
 
-// center display in monitor (must be executed after on step so need an alarm).
+// center display in monitor 
+// must be executed after one step or frame so need an alarm
 alarm_set(0,1);

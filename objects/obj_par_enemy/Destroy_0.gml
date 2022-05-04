@@ -1,11 +1,8 @@
 /// @description sfx, debris, score
 
 audio_play_sound(snd_die, 1, false);
+make_debris_field();
 
-repeat(10) 
-{ 
-	instance_create_layer(x,y,"Instances", obj_debris); 
-}
 
 switch object_index
 {

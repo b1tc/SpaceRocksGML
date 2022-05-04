@@ -8,9 +8,6 @@ with(obj_game)
 }
 
 audio_play_sound(snd_hurt, 1, false);
+make_debris_field();
 
 
-repeat(10)
-{
-	instance_create_layer(x,y,"Instances", obj_debris);
-}
