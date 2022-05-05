@@ -1,0 +1,88 @@
+### Video 13 Space Mods - GML - Power-ups (1/3) - GameMaker Studio 2
+
+##### preliminaries
+We will be implementing power-ups.  Most of these are going to be changes to the existing guns. We add two bullets, three bullets, four, and eight. We will also introduce a totally different kind of weapon, a laser. We will also introduce a shield that makes the player invincible for a few seconds. The first four can use the existing bullet system because we are creating more bullets.  The laser will have to be a new object and we will  introduce the invincibility into the player object, `obj_ship`. 
+
+The first thing is to drag in the new sprites and also a sound effect for the laser.Set the sprite origin of the power-ups, `spr_powerup`, to middle center.  The collision mask does not need adjustment.  The order of the frames is going to be important because we will use these as indices. The first frame will be powerup number 0 and so forth.  Similar to the factions we will create an enumerator to represent all of the power ups.
+
+Corresponding to the power-ups we have `spr_ship_powerups`. The first frame will be two guns that will be added to the ship then three, four, eight, the laser, and the shield. Make sure this sprite origin is middle center.  These will be placed over our corresponding `spr_powerup` index/frame.
+
+##### `obj_powerup`
+
+- assign the sprite `spr_powerup`
+- when created randomly select one of the six frames,
+- in the `create` event we can choose the frame by the image index by using a random function, 
+- select a whole number or an integer so use `irandom_range` instead of `random_range` which is in decimals,
+- we want power-ups to exist in the game world for a few seconds, 
+
+> Power-ups are created by asteroids and enemy ships when they get destroyed but we don't want them to persist indefinitely.  Self destruction makes the game more challenging. We want them to destroy themselves after 5 seconds. We accomplish this with an `alarm`.
+
+- use `alarm[0]` event and use `instance_destroy` to destroy self,
+- in the `create` event we set that alarm but we can't just put five we have to multiply that by game speed because this number is the number of frames not the number seconds,
+- tint the `image_blend` of the power-ups,
+- stop the sprite frames from animating.
+
+> When the player actually collides with a power-up and picks it up we use the sprite frame/index as the reference to determine what power-up to give the player.  We have to stop it from animating by setting the image speed to zero.
+
+##### `obj_game`
+
+We have to set up the collision in the player objects to  pick up the power-ups and we also want to set up the enumerator to index the frames. We don't want this enumerator being declared in multiple places. We use the game object because it is only created once.  We call this enumerator `powerups`.
+
+##### `obj_ship`
+
+- set-up `collision` event with `obj_powerup` (see event code).
+
+> This `collision` event is unique to the player so it belongs in `obj_ship` and not in the faction parents or elsewhere.
+
+- set-up any additional variables needed for our `collision` event in the `create` event,
+- in `collision - obj_powerup`, `guns = powerup_type` is needed for the type of guns that we want to create in the `step` event when we create a bullet by pressing the space key,
+- set two different alarms to toggle invincible and gun type back to their defaults, 
+> a player can have  shields and different gun types active simultaneously,
+- add `alarm[0]` and `alarm[1]` and initialize these in the corresponding switch case in `collision` event with `obj_powerup`event.
+
+###### set up mechanics of invincibility and gun power-up in code
+- in `user event 1` add  an `if` statement to `exit` the event if invincible,
+
+> We want to modify our collisions with other objects, see the `obj_faction - collision` event. Currently if we are colliding with something that's not part of our faction we are damaging the players ship. Here we add another check, `if` we are invincible the other object will take damage. We implement this with an `else if` and use `with(other)`.  We use the same _take damage_ code that corresponds to the object we're colliding with and then `exit` the event.
+
+- add [`draw_self`](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FSprites_And_Tiles%2Fdraw_self.htm) event because we want to overlay the corresponding `spr_ship_powerups` sprite frame to see the invincible shield.
+> We change the way the player is currently drawing itself by default.  If we wanted to keep normal drawing behavior we put `draw_self` then the player will draw itself normally.  Now, however, we also want to draw something on top of the player.
+- use [`draw_sprite_ext`](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FSprites_And_Tiles%2Fdraw_sprite_ext.htm)
+> It is important to note that [`draw_sprite`](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FSprites_And_Tiles%2Fdraw_sprite.htm) doesn't draw a sprite with scale or blending or the rotation unless we tell it to. If we want it to rotate in the same way that the player is rotating we actually have to use the extended version of this function and we have to plug in all of the arguments to match the player.
+
+###### `alpha` change to fade when there is one second left
+> According to `draw_sprite_ext` we are drawing at the same alpha as the player. We want the alpha to fade when we have one second left to alert the player.  We have counter variables set up that can access the remaining time.  These are `alarm[0]` and `alarm[1]`.  Recall that we set `alarm[1]` to trigger after eight seconds. We can check the current value of `alarm[1]` with  the `min` function.
+
+- declare a temporary variable to use in place of `image_alpha`.  
+>For the first 7 seconds this will be unaltered.  When `alarm[1]` is 60 frames or less `alpha`  will lower and  fade out in the last second.
+
+```javascript
+/// @description draw event
+
+draw_self();
+
+// draw guns
+if guns != -1
+{
+	// draw sprite over the top of out player
+	draw_sprite_ext(spr_ship_powerups, guns, x, y, 
+	image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+}
+
+// draw invincibility
+if invincible
+{
+	/*
+	 * alpha will always be opaque, alpha = 1, when min returns 1. 
+	 * 60 frames = 1 second and 2 seconds to 8 seconds is 120 frames to 480 frames.
+	 * During the last second alarm[1] is less that 60 frames.
+	 * The min function returns a number, alpha < 1, causing alpha to fade.
+	 */
+	var alpha = min(1, alarm_get(1)/60);
+	
+	// draw sprite over the top of player
+	draw_sprite_ext(spr_ship_powerups, powerups.invincible_shield, x, y, 
+	image_xscale, image_yscale, image_angle, image_blend, alpha);
+}
+```
+

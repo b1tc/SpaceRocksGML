@@ -4,7 +4,7 @@
     "path": "folders/Notes.yy",
   },
   "resourceVersion": "1.1",
-  "name": "Track_Camera",
+  "name": "Video13",
   "tags": [],
   "resourceType": "GMNotes",
 }
