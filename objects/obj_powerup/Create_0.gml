@@ -13,4 +13,4 @@ image_blend = c_lime;
 // stop the sprite frames from animating
 image_speed = 0;
 
-image_index = powerups.invincible_shield;
+image_index = powerups.star_bullets;
