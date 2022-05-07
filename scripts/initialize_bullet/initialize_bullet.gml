@@ -15,6 +15,7 @@ function initialize_bullet(_dir, _spd, _fac, _bul ){
 	 * NB: The object actually calls create_bullet but the scope of id is present in this 
 	 *     function as well so we do not have to pass it through the argument list.
 	 */
+	
 	var _creator = id;
 	
 	with(inst)
