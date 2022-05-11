@@ -4,36 +4,21 @@ We have completed the invincibility shield and now we move on to the gun power-u
 
 ##### `obj_ship`
 
-In the `step` event we are interested in the `create_bullet(image_angle, bulletSpd, faction)` script. We want to add another argument to the 
- `create_bullet` script that passes in the gun type.  However, we want this argument to be optional.  If our gun is the default gun then we use 
- the following function call, `create_bullet(image_angle, bulletSpd, faction)` and if we have a `guns` argument then our function call takes form,
-  `create_bullet(image_angle, bulletSpd, faction, guns)`.
-  
+In the `step` event we are interested in the `create_bullet(image_angle, bulletSpd, faction)` script. We want to add another argument to the `create_bullet` script that passes in the gun type.  However, we want this argument to be optional.  If our gun is the default gun then we use the following function call, `create_bullet(image_angle, bulletSpd, faction)` and if we have a `guns` argument then our function call takes form, `create_bullet(image_angle, bulletSpd, faction, guns)`.
   
 > Since the original series was posted there have been changes in the way [optional arguments](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Overview%2FScript_Functions.htm) are handle in GM.
 
 >If an argument is not given to a function, its value will be undefined. We can use this to define optional arguments, and check whether an argument is passed in or not by checking if it is equal to undefined. However, we can also explicitly define a default value for an argument which will be used instead of undefined when it is not passed in.
   
-We are using the second option in our `create_bullet` script.  We also changed our functio definition from `function create_bullet(argument0, argument1, argument2)` to
-`function create_bullet(_dir, _spd, _fac, _gun_type = -1)`.  Note the use of the explicitly defined default value.  
+We are using the second option in our `create_bullet` script.  We also changed our function definition from `function create_bullet(argument0, argument1, argument2)` to `function create_bullet(_dir, _spd, _fac, _gun_type = -1)`.  Note the use of the explicitly defined default value for the optional argument.  
 
-When we start to type our function GM will provide the following, `create_bullet(directions, speed, faction, [gun_type])` where [gun_type] indicates our optional argument.
+When we start to type our function GM will provide the following, `create_bullet(directions, speed, faction, [gun_type])` where` [gun_type] ` indicates our optional argument.
 
+The rest of the video discusses overlaying the power-up sprite and instantiating bullets based on gun geometry.  Gun geometries are handled individually in the `switch` statement.  Note the use of [`lengthdir_x`](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FMaths_And_Numbers%2FAngles_And_Distance%2Flengthdir_x.htm) and  [`lengthdir_y`](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FMaths_And_Numbers%2FAngles_And_Distance%2Flengthdir_y.htm) functions in each case.
 
+###### Original Function
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+```javascript
 /// @function create_bullet
 /// @description Create bullet(s) when the space key is pressed
 /// @arg direction
@@ -41,14 +26,11 @@ When we start to type our function GM will provide the following, `create_bullet
 /// @arg faction
 /// @arg gun_type
 
-
 function create_bullet(_dir, _spd, _fac, _gun_type = -1)
 {
-
 	// whatever object is calling this function that will be the scope of the object ID
 	// and hence the "creator".
 	var _creator = id;
-	
 
 	audio_play_sound(snd_zap, 1, false);
 	var inst = instance_create_layer(x, y,"Instances", obj_bullet);
@@ -67,21 +49,143 @@ function create_bullet(_dir, _spd, _fac, _gun_type = -1)
 			case factions.enemy: image_blend = c_red; break;
 		}
 	}
+}
+```
+
+###### New Functions
+```javascript
+/// @function create_bullet
+/// @description Create bullet(s) when the space key is pressed
+/// @arg direction
+/// @arg speed
+/// @arg faction
+
+function create_bullet(_dir, _spd, _fac, _gun_type = -1)
+{
+
+	audio_play_sound(snd_zap, 1, false);
+	// whatever object is calling this function that will be the scope of the object ID
+	// and hence the "creator".
+	//var _creator = id;
 	
+	var _sep, xx, yy, bullet_angle, inst, i;
+
+	// Choose Gun Type
+	switch _gun_type
+	{
+		case powerups.three_bullets:
+		
+			_sep = 0;
+			xx = x + lengthdir_x(_sep, _dir);
+			yy = y + lengthdir_y(_sep, _dir);
+
+			inst = instance_create_layer(xx, yy, "Instances", obj_bullet);
+			initialize_bullet(_dir, _spd, _fac, inst);
+	
+		case powerups.two_bullets:
+			
+			_sep = 12;
+			xx = x + lengthdir_x(_sep, _dir + 90);
+			yy = y + lengthdir_y(_sep, _dir + 90);
+			
+			inst = instance_create_layer(xx, yy, "Instances", obj_bullet);
+			initialize_bullet(_dir, _spd, _fac, inst);
+			
+			xx = x + lengthdir_x(_sep, _dir - 90);
+			yy = y + lengthdir_y(_sep, _dir - 90);
+			
+			inst = instance_create_layer(xx, yy, "Instances", obj_bullet);
+			initialize_bullet(_dir, _spd, _fac, inst);
+		break;
+		
+		case powerups.four_bullets:
+			
+			_sep = 7;
+			
+			var i = 0; repeat(4)
+			{
+				bullet_angle = _dir + (i * 90);
+				xx = x + lengthdir_x(_sep, bullet_angle)
+				yy = y + lengthdir_y(_sep, bullet_angle);
+				
+				inst = instance_create_layer(xx, yy, "Instances", obj_bullet);
+				initialize_bullet(bullet_angle, _spd, _fac, inst);
+				i += 1;
+			}
+		break;
+		
+		case powerups.star_bullets:
+			
+			_sep = 7;
+			
+			i = 0; repeat(8)
+			{
+				bullet_angle = _dir + (i * 45);
+				xx = x + lengthdir_x(_sep, bullet_angle);
+				yy = y + lengthdir_y(_sep, bullet_angle);
+
+				inst = instance_create_layer(xx, yy, "Instances", obj_bullet);
+				initialize_bullet(bullet_angle, _spd, _fac, inst);
+				i += 1;
+			}
+		break;
+		
+		case powerups.laser_cannon:
+		break;
+		
+		// the default can also be case -1:
+		// but it makes sense to put this as the default 
+		default:
+		
+			_sep = 16;
+			xx = x + lengthdir_x(_sep, _dir);
+			yy = y + lengthdir_y(_sep, _dir);
+		
+			inst = instance_create_layer(xx, yy, "Instances", obj_bullet);
+			initialize_bullet(_dir, _spd, _fac, inst);
+
+		break;
+	}
+
 }
 
 
+/// @function initialize_bullet
+/// @description helper function for create_bullet 
+/// @arg direction
+/// @arg speed
+/// @arg faction
+/// @arg bullet_instance
 
 
+function initialize_bullet(_dir, _spd, _fac, _bul ){
+
+	var inst = _bul;
+	
+	/* Whatever object is calling this function that will be the scope of the object ID
+	 * and hence the "creator".  
+	 * NB: The object actually calls create_bullet but the scope of id is present in this 
+	 *     function as well so we do not have to pass it through the argument list.
+	 */
+	
+	var _creator = id;
+	
+	with(inst)
+	{
+		direction = _dir;
+		speed = _spd;
+		faction = _fac;
+		creator = _creator;
+		
+		 
+		// Colorize Bullet According to Faction
+		switch faction 
+		{
+			case factions.ally: image_blend = c_aqua; break;
+			case factions.enemy: image_blend = c_red; break;
+		}
+	}
 
 
-
-
-
-
-
-
-
-
-
-
+}
+```
