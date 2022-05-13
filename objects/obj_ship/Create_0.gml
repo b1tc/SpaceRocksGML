@@ -12,4 +12,3 @@ bulletSpd = 6;
 guns = -1;
 invincible = false;
 
-bullet_struct = {};

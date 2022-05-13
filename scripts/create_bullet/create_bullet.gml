@@ -31,13 +31,13 @@ function create_bullet(_dir, _spd, _fac, _gun_type = -1)
 			_sep = 12;
 			xx = x + lengthdir_x(_sep, _dir + 90);
 			yy = y + lengthdir_y(_sep, _dir + 90);
-			
+
 			inst = instance_create_layer(xx, yy, "Instances", obj_bullet);
 			initialize_bullet(_dir, _spd, _fac, inst);
 			
 			xx = x + lengthdir_x(_sep, _dir - 90);
 			yy = y + lengthdir_y(_sep, _dir - 90);
-			
+
 			inst = instance_create_layer(xx, yy, "Instances", obj_bullet);
 			initialize_bullet(_dir, _spd, _fac, inst);
 		break;

@@ -35,6 +35,7 @@
     {"id":{"name":"spr_debris","path":"sprites/spr_debris/spr_debris.yy",},"order":1,},
     {"id":{"name":"rm_win","path":"rooms/rm_win/rm_win.yy",},"order":2,},
     {"id":{"name":"obj_faction_neutral","path":"objects/obj_faction_neutral/obj_faction_neutral.yy",},"order":1,},
+    {"id":{"name":"create_bullet_struct","path":"notes/create_bullet_struct/create_bullet_struct.yy",},"order":16,},
     {"id":{"name":"obj_faction_ally","path":"objects/obj_faction_ally/obj_faction_ally.yy",},"order":1,},
     {"id":{"name":"spr_asteroid_debris","path":"sprites/spr_asteroid_debris/spr_asteroid_debris.yy",},"order":0,},
     {"id":{"name":"spr_asteroid_med","path":"sprites/spr_asteroid_med/spr_asteroid_med.yy",},"order":1,},
