@@ -52,11 +52,13 @@ function tmp_create_bullet(_dir, _spd, _fac, _gun_type = -1)
 		case powerups.four_bullets:
 		case powerups.star_bullets:
 		
-			n = (stt_bullet.g == 3) ? 4 : 8;
+//			n = (stt_bullet.g == 3) ? 4 : 8;
+			n = (stt_bullet.g == (powerups.four_bullets + 1)) ? 4 : 8;
 			
 			i = 0; repeat(n)
 			{
-				stt_bullet.d = (stt_bullet.g == 3) ? stt_bullet.d + (i * 90) : stt_bullet.d + (i * 45);
+//				stt_bullet.d = (stt_bullet.g == 3) ? stt_bullet.d + (i * 90) : stt_bullet.d + (i * 45);
+				stt_bullet.d = (stt_bullet.g == (powerups.four_bullets + 1)) ? stt_bullet.d + (i * 90) : stt_bullet.d + (i * 45);
 				initialize_bullet(stt_bullet.d, _spd, _fac, stt_bullet.inst());
 				stt_bullet.d = _dir;
 				i += 1;
