@@ -4,25 +4,21 @@
 
 ###### `obj_laser:`
 - for the laser we will create a new object, `obj_laser`,
-- add a `draw` event - we are not usung a sprite for this object, instead we use the built-in `draw` event,
-- use built-in draw frunctions to draw a line from the nosecone of `obj_ship`,
+- add a `draw` event - we are not using a sprite for this object, instead we use the built-in `draw` event,
+- use built-in draw functions to draw a line from the nose cone of `obj_ship`,
 - use [`draw_line_width`](https://manual-en.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FBasic_Forms%2Fdraw_line_width.htm),
 
-> We need to think about a length of the line. We know that it's going to be wherever the creator object is. We need a line going in the direction that we want. It's going
-to have a fixed direction variable that we should set when we create the object. We have to update its position and also its direction every step to make sure that it's following 
-where its creator is. Keep in mind that we will have a creator variable and we're going to need to transport ourselves to the creators position every frame.  We don't have access to this
-yet but we're going to need to pass this to our `create_bullet` function.
+> We need to think about the length of the line. We know that it's going to be wherever the creator object is. We need a line going in the direction that we want. It's going to have a fixed direction variable that we should set when we create the object. We have to update its position and also it's direction every step to make sure that it's following where its creator is. Keep in mind that we will have a creator variable and we're going to need to transport ourselves to the creators position every frame.  We don't have access to this yet but we're going to need to pass this to our `create_bullet` function.
 
-- we could set `direction` or `image_angle` but here we choose image angle because that is how we are controlling how all of the ships are shooting, 
+- we could set `direction` or `image_angle` but here we choose `image angle` because that is how we have done this previously, 
 - check if `instance_exists(creator)`,
 
-> We have to be careful and check if our `creator` doesn't actually exist while we exist. It's possible that the player has just fired off a laser and then become destroyed by
-something. We have to check if our `creator` does not exist, `if !instance_exists` is `true` then we will destroy ourselves and `exit`.
+> We have to be careful and check if our `creator` doesn't actually exist while we exist. It's possible that the player has just fired off a laser and then become destroyed by something. We have to check if our `creator` does not exist, `if !instance_exists` is `true` then we will destroy ourselves and `exit`.
 
 - add a `step` event.  The `draw` event is run after the `step` event and both run every frame. Move the `creator` check code and the `direction` code into the `step` event,
 - in `draw` declare and initialize a length variable and use `lengthdir_x` and `lenghtdir_y` to determine the line,
 
-```
+```javascript
 var len = 500;
 
 // draw line
@@ -33,14 +29,9 @@ draw_line_width(x, y,
 );
 ```
 
-> We have drawn a line but it is not colliding with anything.  We do not have a general collision event that will work so we have to us a function to test for collision using `collision_line`.
-We need to say what object is it going to be colliding with.  This could be an object just for the player and we  know the we're colliding with `obj_faction_enemy` However, we may want the
-enemy to be able to use lasers as well.  We may need a way of working out what our faction is. We can say `obj_faction` but after this we are going to have to work out if
-the object we're colliding with is part of our faction or not and if it's not we don't actually want to be doing anything to it.  For now let's just use `obj_faction`.
-We're not using precise collision masks therefore set this argument `false`. the argument `notme` means exclude me from this collision. If we're colliding with ourselves don't
-include us. It doesn't matter because  the laser object is not a part of `obj_faction` so we can actually just say `false`.
+> We have drawn a line but it is not colliding with anything.  We do not have a general collision event that will work so we have to test for collision using the [`collision_line`](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FMovement_And_Collisions%2FCollisions%2Fcollision_line.htm) function. In the parameter list we need to specify the object we are colliding with.  We  know that we're colliding with `obj_faction_enemy`.  However, we may want the enemy to be able to use lasers as well.  We need a way of working out what our faction is. We can use `obj_faction` but after this we are going to have to work out if the object we're colliding with is part of our faction or not. If it's not we don't actually want to be doing anything to it.  For now let's just use `obj_faction`. We're not using precise collision masks therefore set this argument `false`.  The argument `notme` means exclude the object `collision_line` is called from. If we're colliding with ourselves don't include us.  For `obj_laser` it  doesn't matter because `obj_laser` is not a part of `obj_faction` so we can just say `false`.
 
-```
+```javascript
 // draw collision
 var inst = collision_line(x, y, 
 	x + lengthdir_x(len, direction),
@@ -51,14 +42,11 @@ var inst = collision_line(x, y,
 
 - return the result of the `collision_line` to `inst`,
 
-> The `collision_line` is going to return the `id` of instances that it collides with.  It will return one `id` and it doesn't matter if we are colliding with one at a
-time since this is running 60 frames per second. The return value of the function can be the `id` of any one of the instances considered to be in collision along the line.
-If three instance overlap the defined line, any one of their `ids` could be the return value of the function. It will update very fast so we are not too worried about that.
-We do want to save the result in `inst`.  This function does not return `true` or `false`.  It returns `noone` or an `id`.
+> The `collision_line` function returns `noone` or a single `id` of the instance that it collides with. `collision_line` does not return `true` or `false`.  Because we are running at 60 frames per second it doesn't matter if we are colliding with one, multiple, or no objects. If three instances overlap the defined line, any one of their `ids` could be the return value of the function. It will update very fast so if we miss an object it can be caught in the next frame. We do want to save the result to local variable `inst`.   
 
 - add an `if` statement to determine if there is a collision in that frame and if `true` check if the instance is not our faction and if `true` run `event_perform` on the collided object,
 
-```
+```javascript
 if inst != noone
 {
 	if inst.faction != faction
@@ -71,74 +59,52 @@ if inst != noone
 }
 ```
 
-> We don't know what the faction is we also don't know who our `creator` is but this will be passed into the object when it gets created.
-
-
-> Since this object is moving with its creator it will stay there forever. We haven't made a way to destroy the laser.
+> We don't know what the `faction` is and we also don't know who our `creator` is but this will be passed into the object when it gets created. Since this object is moving with its creator it will stay there forever. We haven't made a way to destroy the laser.
 
 - add a `create` event and set an `alarm` for 0.5 seconds,
 - add `alarm[0]` and add `instance_destroy`,
 - in `create` event add `creator = undefined` and `faction = undefined`.
 
-> Remember at the moment the creator and the faction that it is part of is undefined so we will want to overwrite these.
+> When the `create` event  is run the `creator` and the `faction` that it is part of are undefined and we will want to overwrite these.
 
-###### `create_bullet` function:
+##### `create_bullet` function:
 
-- set `obj_powerup  > create > image_index = powerups.laser_cannon`,
 - in `case powerups.laser_cannon:` fill in code to fire laser,
+- in `obj_powerup  > create` set `image_index = powerups.laser_cannon` for testing,
 
-> Remember: Setting the laser `speed` would make it start moving off in its set direction!  We already have a way of controlling its movment.
-We need to modify function `initialize_bullet`.
+> Remember: Setting the laser `speed` would make it start moving off in its set direction!  We already have a way of controlling its movement.
 
-- in function `initialize_bullet > if (object_index == obj_bullet) speed = _spd`,
+- in `initialize_bullet` change the statement `speed = _spd` to `if (object_index == obj_bullet) speed = _spd`,
 
-> If the `objects_index` is equal to `obj_bullet` only then do we want to set the `speed`. `initialize_bullet` only knows instance `id` itself.
-It will be performing all of this initializing of the bullet regardless of what type of instance gets passed in. We have to be careful that only if it is 
-a bullet and not a laser.
+> Only when `object_index` is equal to `obj_bullet` do we want to set the `speed`. The function `initialize_bullet` only knows the instance `id`.  It will be performing all of this initializing of the bullet regardless of what type of instance gets passed in.  We have to be careful to set the speed if it is a bullet and not a laser.
 
-- in `obj_laser` replace `draw_line_width` with `draw_line_width_color` and match the `faction` color,
+- in `obj_laser` replace `draw_line_width` with [`draw_line_width_color`](https://manual-en.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FBasic_Forms%2Fdraw_line_width_colour.htm) and match the `faction` color,
 - run the game to test.
 
 
-###### spawn powerups
+##### spawn power-ups
 
-- `rm_game` delete test powerup instance,
-- `obj_powerup > create` delete `image_index = powerups.laser_cannon`,
-> Spawn power-ups in the `destroy` events `obj_asteroid` and enemies,
-- add `destroy` to `obj_asteroid` and add random power-up generation, 1 in 6 chance to spawn power-up from asteroid,
-- `obj_par_enemy > destroy` and add random power-up generation, 1 in 2 chance to spawn power-up from asteroid,
-- `obj_gam > room start` reintroduce enemy spawning.
+- in `rm_game` delete the test power-up instance,
+- in `obj_powerup > create` delete the statement `image_index = powerups.laser_cannon`,
+> Spawn power-ups in the `destroy` events of `obj_asteroid` and enemies,
+- add a `destroy` event to `obj_asteroid` and add random power-up generation with a 1 in 6 chance to spawn a power-up from `obj_asteroid`,
+- in `obj_par_enemy > destroy` add random power-up generation with a 1 in 2 chance to spawn a power-up from an enemy,
+- in `obj_game > room start` uncomment the enemy spawn statements to reintroduce enemy spawning.
 
-###### brute immunity
+##### brute immunity
 
-- `obj_faction > create` add `immuneToLaser = false`, this can be toggled in the create event of any but inparticular the `obj_brute`,
-- `obj_faction_enemy > create` and `event_inherited` because we were overriding this event not inheriting it,
-- do the same in `obj_faction_ally > create`
+- in `obj_faction > create` add the statement `immuneToLaser = false`, this can be toggled in the create event of any inheriting object but in particular the `obj_brute`,
+- in `obj_faction_enemy > create` add `event_inherited` because we were overriding this event not inheriting it,
+- in `obj_faction_ally > create` add `event_inherited` because we were overriding this event not inheriting it,
 
-> `obj_faction_neutral` does inherit `immuneToLaser = false` because it is inheriting from `obj_faction`.  The other two `obj_faction_enemy` and `obj_faction_ally`.
-For `obj_faction_enemy` and `obj_faction_ally` we didn't have `event_inherited` in their `create` event because they were just overriding it. 
-All factions will inherit `immuneToLaser = false`.  In `obj_brute > create` set  `immuneToLaser = true` to override.
+> `obj_faction_neutral` does inherit `immuneToLaser = false` because it is inheriting from `obj_faction`.   For `obj_faction_enemy` and `obj_faction_ally` we didn't have `event_inherited` in their `create` event because they were just overriding it. Now all factions will inherit `immuneToLaser = false`.  
+
+-in `obj_brute > create` set  `immuneToLaser = true` to override.
+
+> Now our brute is immune to laser fire,
  
-- in `obj_laser > draw` add check `if !immuneToLaser` eexecute `event_perform`
+- in `obj_laser > draw` add the check `if !immuneToLaser` execute `event_perform` event.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
+> If an object colliding with `obj_laser` is not immune to laser fire execute that objects `event_perform` event otherwise it is immune and branch over this statement.
 
 
