@@ -17,8 +17,8 @@ if keyboard_check(vk_up)
 
 if keyboard_check_pressed(vk_space)
 {
-	create_bullet(image_angle, bulletSpd, faction, guns);
-	//tmp_create_bullet(image_angle, bulletSpd, faction, guns);
+	//create_bullet(image_angle, bulletSpd, faction, guns);
+	stt_create_bullet(image_angle, bulletSpd, faction, guns);
 
 }
 

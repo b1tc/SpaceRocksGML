@@ -6,7 +6,7 @@
 	Due to the new update, some things are a bit broken. 
 	If you are having a problem where the bullets do not exit the ship, change the following.
 
-	In the Bullet object, Under the collission event with obj_faction, the line 
+	In the Bullet object, Under the collision event with obj_faction, the line 
 	if(other == creator) exit; should be if(other.id == creator) exit; 
 	the .id must be added for it to work.
 */

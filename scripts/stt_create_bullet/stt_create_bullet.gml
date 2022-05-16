@@ -1,13 +1,15 @@
-/// @function tmp_create_bullet
+/// @function stt_create_bullet
 /// @description Create bullet(s) when the space key is pressed
 /// @arg direction
 /// @arg speed
 /// @arg faction
 
-function tmp_create_bullet(_dir, _spd, _fac, _gun_type = -1)
+function stt_create_bullet(_dir, _spd, _fac, _gun_type = -1)
 {
 
-	audio_play_sound(snd_zap, 1, false);
+	// choose sfx 
+	var _snd = (_gun_type == powerups.laser_cannon) ? snd_laser : snd_zap;
+	audio_play_sound(_snd, 1, false);
 	
 	// stt_bullet struct members
 	var d, s, g, _x, _y, xx, yy, inst;
@@ -96,7 +98,8 @@ function tmp_create_bullet(_dir, _spd, _fac, _gun_type = -1)
 		break;
 		
 		case powerups.laser_cannon:
-			// handled with separate object
+			inst = instance_create_layer(x, y, "Instances", obj_laser);
+			initialize_bullet(_dir, _spd, _fac, inst);
 		break;
 		
 		// the default can also be case -1:

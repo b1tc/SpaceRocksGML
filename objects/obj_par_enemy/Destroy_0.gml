@@ -3,6 +3,7 @@
 audio_play_sound(snd_die, 1, false);
 make_debris_field();
 
+global.cameraShake = 4;
 
 switch object_index
 {

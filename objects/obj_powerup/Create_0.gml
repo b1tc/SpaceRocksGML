@@ -13,4 +13,5 @@ image_blend = c_lime;
 // stop the sprite frames from animating
 image_speed = 0;
 
-
+//FOR TESTING
+//image_index = powerups.laser_cannon;

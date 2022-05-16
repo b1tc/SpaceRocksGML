@@ -15,8 +15,8 @@ if point_distance(x,y, obj_ship.x, obj_ship.y) < 250
 	bulletCounter++;
 	if bulletCounter > 60
 	{
-		create_bullet(image_angle,4,faction);
-		//tmp_create_bullet(image_angle,4,faction);
+		//create_bullet(image_angle,4,faction);
+		stt_create_bullet(image_angle,4,faction);
 		bulletCounter = 0;
 	}
 }

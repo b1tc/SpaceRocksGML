@@ -1,0 +1,15 @@
+### Video 16 Space Mods - GML - Effects (1/2) - GameMaker Studio 2
+
+##### camera shake
+
+###### `obj_camera:`
+
+> Set up a random variable and add it to the `global.cameraX` and `global.cameraY`,
+- add `obj_camera > create` event and declare `global.cameraShake`,
+> Remember, in `obj_camera > step` we created a script function named `track_with_camera`, therefore to follow the video we need to edit `track_with_camera`,
+- in `track_with_camera` add camera shake statements (see code),
+> In the `destroy` events of both asteroid and enemies set a value for `global.cameraShake` as follows.
+- in `obj_par_enemy > destroy` add the statement `global.cameraShake = 4` (or any value),
+> In `obj_asteroid` move most of the code from `obj_asteroid > user event 1` event to `obj_asteroid > destroy` event leaving only the `instance_destroy` statement in `obj_asteroid > user event 1`.  We destroy our asteroid instance in `obj_asteroid > user event 1` collision event. The `destroy` event is more suited for spawning the power-ups, asteroids and setting the score. 
+- in `obj_asteroid > destroy` add `global.cameraShake` statements (see code).
+

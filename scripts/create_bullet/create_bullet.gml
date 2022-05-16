@@ -6,8 +6,14 @@
 
 function create_bullet(_dir, _spd, _fac, _gun_type = -1)
 {
-
-	//audio_play_sound(snd_zap, 1, false);
+	if _gun_type == powerups.laser_cannon
+	{
+		audio_play_sound(snd_laser, 1, false);
+	}
+	else
+	{
+		audio_play_sound(snd_zap, 1, false);
+	}
 	
 	// whatever object is calling this function that will be the scope of the object ID
 	// and hence the "creator".
@@ -76,7 +82,6 @@ function create_bullet(_dir, _spd, _fac, _gun_type = -1)
 		break;
 		
 		case powerups.laser_cannon:
-			audio_play_sound(snd_laser, 1, false);
 			inst = instance_create_layer(x, y, "Instances", obj_laser);
 			initialize_bullet(_dir, _spd, _fac, inst);
 		break;
