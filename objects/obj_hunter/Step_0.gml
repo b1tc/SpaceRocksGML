@@ -1,5 +1,7 @@
 /// @description Bot Behavior
 
+event_inherited();
+
 // make sure obj_ship exists otherwise exit
 if !instance_exists(obj_ship) exit; 
 

@@ -1,0 +1,19 @@
+### Video 17 Space Mods - GML - Effects (2/2) - GameMaker Studio 2
+
+#### `obj_particles:`
+- for the three particle sprites set middle center for the sprite origin,
+- create `obj_particles` and make this object persistent,
+- add `obj_particles` to `rm_start`,
+- add `obj_particles > create` event - this is where we create all our particles,
+> [Particles](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FParticles%2FParticles.htm) are graphic resources that 
+are teriffic for drawing fast yet versatile graphics effects in our games. They do not interact with anything they are purly cosmetic.
+A [particle system](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FParticles%2FParticle_Systems%2FParticle_Systems.htm) is like a container for all the particle types.
+
+ 
+- add `obj_particle > clean up` event to destroy the particle system.
+
+- add `obj_particle > room end` event to clear the particle system.
+
+
+#### `obj_ship:`
+- in `obj_ship > step` event add particle system to movement keys,

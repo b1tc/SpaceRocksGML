@@ -12,3 +12,6 @@ bulletSpd = 6;
 guns = -1;
 invincible = false;
 
+// for particle system
+exhaustCounter = 0;
+

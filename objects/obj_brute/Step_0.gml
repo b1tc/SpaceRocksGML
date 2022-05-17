@@ -1,5 +1,7 @@
 /// @description Bot Behavior
 
+event_inherited();
+
 // update sprite image_index based on HP
 image_index = HP - 1;
 
