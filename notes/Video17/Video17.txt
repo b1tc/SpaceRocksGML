@@ -1,19 +1,159 @@
 ### Video 17 Space Mods - GML - Effects (2/2) - GameMaker Studio 2
 
-#### `obj_particles:`
-- for the three particle sprites set middle center for the sprite origin,
-- create `obj_particles` and make this object persistent,
-- add `obj_particles` to `rm_start`,
-- add `obj_particles > create` event - this is where we create all our particles,
-> [Particles](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FParticles%2FParticles.htm) are graphic resources that 
-are teriffic for drawing fast yet versatile graphics effects in our games. They do not interact with anything they are purly cosmetic.
-A [particle system](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FParticles%2FParticle_Systems%2FParticle_Systems.htm) is like a container for all the particle types.
+In this last video of the Friendly Cosmonaut series we create `obj_particles` and add the object to `obj_ship`, `obj_asteroids`, `obj_par_enemy`.  Certain events must be overridden so we will make use of `event_inherited`.
 
- 
-- add `obj_particle > clean up` event to destroy the particle system.
+- [Particles](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FParticles%2FParticles.htm) are graphic resources that are terrific for drawing fast yet versatile graphics effects in our games. They do not interact with anything they are purely cosmetic.
 
-- add `obj_particle > room end` event to clear the particle system.
+- A [particle system](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FParticles%2FParticle_Systems%2FParticle_Systems.htm) is like a container for all the [particle types](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FParticles%2FParticle_Types%2FParticle_Types.htm).  
+- `obj_particles` is persistent and placed once in `rm_start`,
+
+- We are only using particle types and particle systems in this example,
+
+- A particle system is like a container for all the particle types.
+
+- We have four different particle types, player ship exhaust, enemy ship exhaust, ship debris, and asteroid debris.
+
+- A particle system, `partSys = part_system_create()` can contain multiple different types of particles.
+
+- We can also perform system wide changes on the  particle system like clearing the system in the `room end` event.
+
+- `partTypeExhaust = part_type_create()` is an example of creating a particle type.  We can use pre-existing sprites or use our own.  See [Particle Types](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FParticles%2FParticle_Types%2FParticle_Types.htm) for more information.
+
+- `part_type_sprite` chooses a sprite but after that it is up the the dev to determine what parameters need to be changed to achieve the desired effect.  It requires a great deal of experimentation and/or an external particle editor.
+
+- `part_type_life(partTypeExhaust, 3, 15)` determines the lifetime of the particle and it is measured in steps (frames) not seconds.
+
+> Particles are different than instance variables.  When an instance is destroyed all its variables are destroyed. Particles are handled differently and we must perform our own clean up. That is why we must add `obj_particles > clean up` event to destroy the particle system and the individual particle types.  Also, in case a particle persists after a player object dies we must also add `obj_particles > room end` event and clear the system, `part_particles_clear(partSys)`. The function [`part_particles_clear`](https://manual.yoyogames.com/index.htm#t=GameMaker_Language%2FGML_Reference%2FDrawing%2FParticles%2FParticle_Systems%2Fpart_particles_clear.htm) will just clear the particles already there.  It will not destroy or reset the particle system i.e., any of the statements in our `obj_particles > create` event.  It just gets rid of the particles that are there.
+
+For the ship exhaust, we want to create the particle only when we pulse, i.e., move the ship when we press `obj_ship > step > if keyboard_check(vk_up)`.  The essential statement is
+
+```javascript
+	with(obj_particles)
+	{
+		part_particles_create(partSys, _xx, _yy, partTypeExhaust, 1);
+	}
+```
+where we have to use `with(obj_particles)` because we are in `obj_ship` and the particle system is created in `obj_particles`, i.e., a persistent object residing in `rm_start`.  Remember that the sprite index is the middle center of the sprite and `x` and `y` are not exactly at the rear of the ship sprite because of the indented triangular shape of the sprite. Therefore we use `lengthdir_x` and `lengthdir_y` to guesstimate the best location for the exhaust. The `exhaustCounter`, see `obj_ship > create`, simply limits the number of particles created to an arbitrarily chosen four frames.  
+
+```javascript
+if keyboard_check(vk_up)
+{
+	motion_add(image_angle,0.05);
+	
+	// pfx (every 4 frames)
+	exhaustCounter++;
+		if exhaustCounter >= 4
+		{
+			var len = sprite_height * 0.4;
+			var _xx = x - lengthdir_x(len, image_angle);
+			var _yy = y - lengthdir_y(len, image_angle);
+			with(obj_particles)
+			{
+				part_particles_create(partSys, _xx, _yy, partTypeExhaust, 1);
+			}
+		exhaustCounter = 0;
+		}
+}
+```
+For the enemy exhaust, the particle type `partTypeEnemyExhaust` is set similarly to the `partTypeExhaust` in `obj_particle > create`.  Creating exhaust for an enemy ship is also identical to the statements in `obj_ship > step > if keyboard_check(vk_up)` except we place this code in `obj_par_enemy > step` remembering to again initialize `exhaustCounter` in `obj_par_enemy > create`.  
+
+> NB: It was not explicitly stated above but we must create the `obj_par_enemy > step` event at this point.  Because we just created this `obj_par_enemy > step` event our children objects, `obj_raider`, `obj_hunter` and `obj_brute` have not inherited this event!  Therefore, we must include `event_inherited` in the `step` events of each of these children objects.  Also, remember to use `partTypeEnemyExhaust` instead of `partTypeExhaust` in every required location of our code.
+
+##### Now we can create `partTypeAsteroidDebris` and `partTypeShipDebris`.  
+
+For `obj_ship` debris, `partTypeShipDebris`, we use code similar to our ship exhaust in `obj_ship > step`. Except now we are working in `obj_ship > destroy` because this is where we create our debris field when the ship is destroyed. We are using `part_particles_create_color` instead of `part_particles_create` to colorize the debris the same as the ship. This method was not used for the ship exhaust because we can only vary it by one color as opposed to the fade that we can do with `part_type_color3` in `obj_particles > create`.
+
+Our code is,
+
+```javascript
+	var _xx = x;
+	var _yy = y;
+	var _ib = image_blend;
+	with(obj_particles)
+	{
+		part_particles_create_color(partSys, _xx, _yy, partTypeShipDebris, _ib, 10);
+	}
+```
+where we created local vars in `obj_ship` to use inside `with(obj_particles)` because of scope.
+
+> Again we can use the same code in `obj_par_enemy > destroy` for our enemy ship debris.
+
+For our asteroids, `obj_asteroids > destroy` is where we create the debris base on the size of the asteroids,
+
+```javascript
+	with(obj_particles) part_particles_create(partSys,_xx,_yy,partTypeAsteroidDebris, 12); // for huge asteroids
+	with(obj_particles) part_particles_create(partSys,_xx,_yy,partTypeAsteroidDebris, 7);  // for medium asteroids
+	with(obj_particles) part_particles_create(partSys,_xx,_yy,partTypeAsteroidDebris, 3);  // for small asteroids
+```
+> NB: The location of each of these statements is in their respective `if-statement` clause.
 
 
-#### `obj_ship:`
-- in `obj_ship > step` event add particle system to movement keys,
+----
+
+##### `obj_particles > create:`
+
+```javascript
+/// @description particle systems
+
+partSys = part_system_create();
+
+// Exhaust
+partTypeExhaust = part_type_create();
+part_type_sprite(partTypeExhaust, spr_exhaust, false, false, false);
+part_type_size(partTypeExhaust, 0.4 ,0.4, 0.05, 0);
+part_type_color3(partTypeExhaust, c_white, c_fuchsia, c_purple);
+part_type_alpha3(partTypeExhaust, 1, 1, 0);
+part_type_life(partTypeExhaust, 3, 15);
+
+partTypeEnemyExhaust = part_type_create();
+part_type_sprite(partTypeEnemyExhaust, spr_exhaust, false, false, false);
+part_type_size(partTypeEnemyExhaust, 0.4 ,0.4, 0.05, 0);
+part_type_color3(partTypeEnemyExhaust, c_red, c_orange, c_yellow);
+part_type_alpha3(partTypeEnemyExhaust, 1, 1, 0);
+part_type_life(partTypeEnemyExhaust, 3, 15);
+
+// Debris
+partTypeAsteroidDebris = part_type_create();
+part_type_sprite(partTypeAsteroidDebris, spr_asteroid_debris, false, false, true);
+part_type_life(partTypeAsteroidDebris,60,80);
+part_type_alpha3(partTypeAsteroidDebris, 0.8, 0.8, 0);
+part_type_direction(partTypeAsteroidDebris,0,359,0,false);
+part_type_orientation(partTypeAsteroidDebris,0,359,1,false,false);
+part_type_speed(partTypeAsteroidDebris,2,2.4,-0.02,0);
+part_type_color1(partTypeAsteroidDebris, c_orange);
+
+partTypeShipDebris = part_type_create();
+part_type_sprite(partTypeShipDebris, spr_ship_debris, false, false, true);
+part_type_size(partTypeShipDebris, 0.5 ,1, 0, 0);
+part_type_life(partTypeShipDebris,60,80);
+part_type_alpha3(partTypeShipDebris, 0.6, 0.6, 0);
+part_type_direction(partTypeShipDebris,0,359,0,false);
+part_type_orientation(partTypeShipDebris,0,359,1,false,false);
+part_type_speed(partTypeShipDebris,3,4,-0.05,0);
+//part_type_color1(partTypeAsteroidDebris, c_aqua);
+```
+
+##### `obj_particles > clean up:`
+
+```javascript
+/// @description destroy prticle systems
+
+part_system_destroy(partSys);
+
+part_type_destroy(partTypeExhaust);
+part_type_destroy(partTypeEnemyExhaust);
+part_type_destroy(partTypeAsteroidDebris);
+part_type_destroy(partTypeShipDebris);
+```
+
+##### `obj_particles > room end:`
+
+```javascript
+/// @description clear particles
+
+part_particles_clear(partSys);
+```
+
+
+
+

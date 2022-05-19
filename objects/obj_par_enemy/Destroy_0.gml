@@ -4,7 +4,6 @@ audio_play_sound(snd_die, 1, false);
 make_debris_field();
 
 // particle fx 
-var len = sprite_height * 0.4;
 var _xx = x;
 var _yy = y;
 var _ib = image_blend;

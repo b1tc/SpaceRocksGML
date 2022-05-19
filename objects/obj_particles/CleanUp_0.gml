@@ -1,4 +1,4 @@
-/// @description 
+/// @description destroy particle system
 
 part_system_destroy(partSys);
 
