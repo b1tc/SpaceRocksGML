@@ -1,4 +1,4 @@
-/// @description Insert description here
+/// @description Choose Room
 
 if keyboard_check_pressed(vk_enter)
 {
