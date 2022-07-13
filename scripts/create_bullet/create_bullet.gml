@@ -4,6 +4,14 @@
 /// @arg speed
 /// @arg faction
 
+/***************************************************************
+ * NB: This was our original function for creating bullets.
+ * We replaced this function with stt_create_bullet because we 
+ * wanted to use a local struct in our function.
+ ***************************************************************
+ */
+
+
 function create_bullet(_dir, _spd, _fac, _gun_type = -1)
 {
 	if _gun_type == powerups.laser_cannon
@@ -15,9 +23,6 @@ function create_bullet(_dir, _spd, _fac, _gun_type = -1)
 		audio_play_sound(snd_zap, 1, false);
 	}
 	
-	// whatever object is calling this function that will be the scope of the object ID
-	// and hence the "creator".
-	//var _creator = id;
 	
 	var _sep, xx, yy, bullet_angle, inst, i;
 

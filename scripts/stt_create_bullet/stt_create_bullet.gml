@@ -18,7 +18,7 @@ function stt_create_bullet(_dir, _spd, _fac, _gun_type = -1)
 	 *	  d : _dir, direction from the parameter list of the function.
 	 *	  s : [16,12,0,7,7], separation used in lengthdir_x and lengthdir_y. NB: we added 16 to the array for the default 
 	 *		   single bullet case. This moves the bullet origin from the interior of the ship sprite to the nozzle or nose cone.
-	 *		   The other numbers determined by FriendlyCosmonaut were assigned to _sep in each case (s replaces _sep.
+	 *		   The other numbers determined by FriendlyCosmonaut were assigned to _sep in each case (s replaces _sep).
 	 *	  g : _gun_type + 1, from the parameter list, _gun_type can be -1, 0, 1, 2, 3 and corresponds to the powerups enum.
 	 *		   Adding 1 to _gun_type gives us a number that we can use to index the s array.
 	 *   _x : x is the global x value of the object calling this function.
@@ -32,8 +32,8 @@ function stt_create_bullet(_dir, _spd, _fac, _gun_type = -1)
 	 * 
 	 *			s : [16, 12, 0, 7, 7]
 	 *				 -1,  0, 1, 2, 3	<-- _gun_type as determined by the powerup enumerator and default condition in optional argument
-	 *				  0,  1, 2, 3, 4  <-- real array index = _gun_type + 1
-	 *				  1,  2, 3, 4, 8  <-- number of bullets for selected gun
+	 *				  0,  1, 2, 3, 4	<-- real array index = _gun_type + 1
+	 *				  1,  2, 3, 4, 8	<-- number of bullets for selected gun
 	 *
 	 *
 	 */

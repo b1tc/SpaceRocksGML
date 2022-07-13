@@ -5,8 +5,8 @@ event_inherited();
 // make sure obj_ship exists otherwise exit
 if !instance_exists(obj_ship) exit; 
 
-if point_distance(x,y, obj_ship.x, obj_ship.y) < 250
 // if player is in range
+if point_distance(x,y, obj_ship.x, obj_ship.y) < 250
 {
 	// turn to face player ship
 	var new_angle = point_direction(x,y,obj_ship.x, obj_ship.y);
@@ -22,8 +22,7 @@ if point_distance(x,y, obj_ship.x, obj_ship.y) < 250
 		bulletCounter = 0;
 	}
 }
-else 
-// otherwise no change (rotate back to original direction)
+else // no change (rotate back to original direction)	
 {
 	image_angle = lerp(image_angle, direction, 0.1);
 }

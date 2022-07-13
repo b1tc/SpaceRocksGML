@@ -21,8 +21,7 @@ if point_distance(x,y, obj_ship.x, obj_ship.y) < 250
 	{
 		speed -= 0.05;
 	}
-	// otherwise increase speed when outside 150 radius
-	else
+	else // increase speed when outside 150 radius
 	{
 		speed += 0.01;
 	}
@@ -36,8 +35,7 @@ if point_distance(x,y, obj_ship.x, obj_ship.y) < 250
 		bulletCounter = 0;
 	}
 }
-else 
-// otherwise no change (set back to original speed)
+else // no change (set back to original speed)
 {
 	speed = lerp(speed, originalSpeed, 0.1);
 }

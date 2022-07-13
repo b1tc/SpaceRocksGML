@@ -22,6 +22,7 @@
     {"id":{"name":"spr_ship","path":"sprites/spr_ship/spr_ship.yy",},"order":3,},
     {"id":{"name":"spr_lives","path":"sprites/spr_lives/spr_lives.yy",},"order":2,},
     {"id":{"name":"fnt_text","path":"fonts/fnt_text/fnt_text.yy",},"order":0,},
+    {"id":{"name":"0_ReadMe","path":"notes/0_ReadMe/0_ReadMe.yy",},"order":20,},
     {"id":{"name":"spawn_off_camera","path":"scripts/spawn_off_camera/spawn_off_camera.yy",},"order":0,},
     {"id":{"name":"Video 9","path":"notes/Video 9/Video 9.yy",},"order":7,},
     {"id":{"name":"Video15","path":"notes/Video15/Video15.yy",},"order":17,},
@@ -135,7 +136,7 @@
     {"CopyToMask":-1,"filePath":"datafiles","resourceVersion":"1.0","name":".DS_Store","resourceType":"GMIncludedFile",},
   ],
   "MetaData": {
-    "IDEVersion": "2022.5.1.16",
+    "IDEVersion": "2022.6.0.23",
     "TutorialProject": "true",
     "TutorialName": "Space Rocks - GML",
     "TutorialStartPage": "index.html",

@@ -5,7 +5,7 @@ We found that we needed to declare all our struct members as local vars otherwis
 	// struct members
 	var d,s,g,xd,yd, m, _x, _y, sg;
 	
-This is an misunderstanding of how scope works in GM because we delare the struct with the var keyword making it local.  
+This is a misunderstanding of how scope works in GM because we delare the struct with the var keyword making it local.  
 
 		var mystruct = 
 		{

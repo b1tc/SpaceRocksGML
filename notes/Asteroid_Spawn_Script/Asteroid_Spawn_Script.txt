@@ -41,7 +41,7 @@ In obj_game > Alarm0 it is used to spawn in asteroids every 4 seconds.
 
 NOTES: 
 
-[1] The function function spawn_off_camera(obj, num) is written more generally to be accomodate
+[1] The function function spawn_off_camera(obj, num) is written more generally to accomodate
 the spawn of other game objects like enemies and power-ups.
 
 [2] Alarm0 was originally set to 4 seconds before we moved to the script function spawn_off_camera(obj, num). 

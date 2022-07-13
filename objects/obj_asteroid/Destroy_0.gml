@@ -35,8 +35,7 @@ else if  sprite_index == spr_asteroid_med
 		new_asteroid.sprite_index = spr_asteroid_small;
 	}
 }
-else
-// smallest asteroid case added for global.cameraShake
+else // smallest asteroid case added for global.cameraShake
 {
 	global.cameraShake = 1;
 	
